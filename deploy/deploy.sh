@@ -1,11 +1,14 @@
-#!/bin/bash
+#!/bin/bash -x
 IMG_PREFIX="itszero/zipkin-"
 NAME_PREFIX="zipkin-"
 PUBLIC_PORT="8080"
 ROOT_URL="http://deb.local:$PUBLIC_PORT"
 
-if [[ $CLEANUP == "y" ]]; then
-  SERVICES=("cassandra" "collector" "query" "web")
+name=$1
+cleanup=$2
+if [[ $cleanup == "y" ]]; then
+  # SERVICES=("cassandra" "collector" "query" "web")
+  SERVICES=("$name")
   for i in "${SERVICES[@]}"; do
     echo "** Stopping zipkin-$i"
     docker stop "${NAME_PREFIX}$i"
@@ -13,14 +16,20 @@ if [[ $CLEANUP == "y" ]]; then
   done
 fi
 
-echo "** Starting zipkin-cassandra"
-docker run -d --name="${NAME_PREFIX}cassandra" "${IMG_PREFIX}cassandra"
 
-echo "** Starting zipkin-collector"
-docker run -d --link="${NAME_PREFIX}cassandra:db" -p 9410:9410 --name="${NAME_PREFIX}collector" "${IMG_PREFIX}collector"
+if [ $name == "cassandra" ]; then
+	echo "** Starting zipkin-cassandra"
+	docker run -i --name="${NAME_PREFIX}cassandra" -p 9160:9160 -t "${IMG_PREFIX}cassandra"
+elif [ $name == "collector" ]; then
+	echo "** Starting zipkin-collector"
+	docker run -i --link="${NAME_PREFIX}cassandra:db" -p 9410:9410 --name="${NAME_PREFIX}collector" -t "${IMG_PREFIX}collector" 
+elif [ $name == "query" ]; then
+	echo "** Starting zipkin-query"
+	docker run -i --link="${NAME_PREFIX}cassandra:db" -p 9411:9411 --name="${NAME_PREFIX}query" -t "${IMG_PREFIX}query" 
+elif [ $name == "web" ]; then
+	echo "** Starting zipkin-web"
+	docker run -i --link="${NAME_PREFIX}query:query" -p 8080:$PUBLIC_PORT -e "ROOTURL=${ROOT_URL}" --name="${NAME_PREFIX}web" -t "${IMG_PREFIX}web" 
+fi
 
-echo "** Starting zipkin-query"
-docker run -d --link="${NAME_PREFIX}cassandra:db" -p 9411:9411 --name="${NAME_PREFIX}query" "${IMG_PREFIX}query"
 
-echo "** Starting zipkin-web"
-docker run -d --link="${NAME_PREFIX}query:query" -p 8080:$PUBLIC_PORT -e "ROOTURL=${ROOT_URL}" --name="${NAME_PREFIX}web" "${IMG_PREFIX}web"
+
