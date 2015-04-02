@@ -6,6 +6,10 @@ RUN apt-get install -y git
 RUN git clone https://github.com/twitter/zipkin.git
 RUN apt-get install -y curl
 
+# Setup aws cli and the config
+RUN apt-get -y install awscli
+RUN mkdir /.aws
+
 # Install Scala 2.10.4
 ENV SCALA_VERSION 2.10.4
 
