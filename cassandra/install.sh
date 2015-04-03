@@ -19,7 +19,7 @@ sed -i s/Xss180k/Xss256k/ /etc/cassandra/cassandra-env.sh
 sleep 5
 
 echo "*** Getting Schema"
-wget https://github.com/twitter/zipkin/blob/master/zipkin-cassandra/src/schema/cassandra-schema.txt
+wget https://raw.githubusercontent.com/twitter/zipkin/master/zipkin-cassandra/src/schema/cassandra-schema.txt
 echo "*** Importing Scheme"
 cassandra-cli -host localhost -port 9160 -f cassandra-schema.txt
 
