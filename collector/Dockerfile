@@ -1,8 +1,7 @@
 FROM itszero/zipkin-base
 MAINTAINER Zero Cho "http://itsze.ro"
 
-ADD setup_collector.sh /
-RUN chmod +x setup_collector.sh
+ADD /var/tmp/knewton/tdist-zipkin/tdist-zipkin.jar /
 
 ADD run.sh /usr/local/bin/run
 ENTRYPOINT ["/usr/local/bin/run"]
