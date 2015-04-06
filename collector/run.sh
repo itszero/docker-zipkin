@@ -1,13 +1,9 @@
 #!/bin/bash
-if [[ -z $DB_PORT_7000_TCP_ADDR ]]; then
-  echo "** ERROR: You need to link the cassandra container as db."
-  exit 1
-fi
-
-SERVICE_NAME="zipkin-collector-service"
-CONFIG="${SERVICE_NAME}/config/collector-cassandra.scala"
-
-echo "** Starting ${SERVICE_NAME}..."
-cd zipkin
-sed -i "s/localhost/${DB_PORT_7000_TCP_ADDR}/" $CONFIG
-bin/sbt "project $SERVICE_NAME" "run -f $CONFIG"
+scala \
+    -classpath /tdist-zipkin.jar com.knewton.tdist.zipkin.receiver.kafka.KafkaReceiverApp\
+    -zipkin.itemQueue.maxSize=10\
+    -com.twitter.finagle.tracing.debugTrace=true\
+    -zipkin.kafka.groupid=0\
+    -zipkin.zookeeper.location=host1:2181,host2:2181,host3:2181/Kafka08\
+    -zipkin.kafka.server=host1:9160,host2:9160,host3:9160\
+    -zipkin.kafka.topics=zipkin-tdist=1
