@@ -22,7 +22,7 @@ if [ $name == "cassandra" ]; then
 	docker run -i --name="${NAME_PREFIX}cassandra" -p 9160:9160 -t "${IMG_PREFIX}cassandra"
 elif [ $name == "collector" ]; then
 	echo "** Starting zipkin-collector"
-	docker run -i --link="${NAME_PREFIX}cassandra:db" -p 9410:9410 --name="${NAME_PREFIX}collector" -t "${IMG_PREFIX}collector" 
+	docker run -i --link="${NAME_PREFIX}cassandra:db" -p 9410:9410 -p 9903:9903 --name="${NAME_PREFIX}collector" -t "${IMG_PREFIX}collector"
 elif [ $name == "query" ]; then
 	echo "** Starting zipkin-query"
 	docker run -i --link="${NAME_PREFIX}cassandra:db" -p 9411:9411 --name="${NAME_PREFIX}query" -t "${IMG_PREFIX}query" 
@@ -30,6 +30,4 @@ elif [ $name == "web" ]; then
 	echo "** Starting zipkin-web"
 	docker run -i --link="${NAME_PREFIX}query:query" -p 8080:$PUBLIC_PORT -e "ROOTURL=${ROOT_URL}" --name="${NAME_PREFIX}web" -t "${IMG_PREFIX}web" 
 fi
-
-
 
