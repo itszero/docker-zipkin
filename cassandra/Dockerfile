@@ -1,4 +1,4 @@
-FROM debian:sid
+FROM java:8
 MAINTAINER Zero Cho "http://itsze.ro"
 
 ADD install.sh /usr/local/bin/install

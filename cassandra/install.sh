@@ -1,21 +1,22 @@
+apt-get update
+apt-get install -y curl procps wget
+
 echo "*** Adding Cassandra deb source"
-cat << EOF >> /etc/apt/sources.list
-deb http://www.apache.org/dist/cassandra/debian 21x main
-deb-src http://www.apache.org/dist/cassandra/debian 21x main
+cat << EOF >> /etc/apt/sources.list.d/cassandra.sources.list
+deb http://debian.datastax.com/community stable main
 EOF
 
 echo "*** Importing Cassandra deb keys"
-gpg --keyserver keys.gnupg.net --recv-keys 749D6EEC0353B12C
-gpg --export --armor 749D6EEC0353B12C | apt-key add -
+curl -L http://debian.datastax.com/debian/repo_key | apt-key add -
 
 echo "*** Installing Cassandra"
 apt-get update
-apt-get install -y cassandra procps wget
+apt-get install -y dsc12=1.2.10-1 cassandra=1.2.10
 
 echo "*** Starting Cassandra"
 sed -i s/Xss180k/Xss256k/ /etc/cassandra/cassandra-env.sh
 /usr/sbin/cassandra
-sleep 10
+sleep 5
 
 echo "*** Importing Scheme"
 wget https://raw.github.com/openzipkin/zipkin/master/zipkin-cassandra/src/schema/cassandra-schema.txt
