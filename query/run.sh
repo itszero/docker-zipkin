@@ -25,4 +25,4 @@ QueryServiceBuilder(storeBuilder)
 EOF
 
 echo "** Starting ${SERVICE_NAME}..."
-bin/sbt "project $SERVICE_NAME" "run -f $CONFIG"
+./$SERVICE_NAME/build/install/$SERVICE_NAME/bin/$SERVICE_NAME -f $CONFIG

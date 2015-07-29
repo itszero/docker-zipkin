@@ -1,4 +1,5 @@
-#!/bin/bash -x
+#!/bin/bash
+
 IMG_PREFIX="itszero/zipkin-"
 NAME_PREFIX="zipkin-"
 PUBLIC_PORT="8080"

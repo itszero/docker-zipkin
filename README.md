@@ -23,6 +23,12 @@ Note that if you changed PREFIX in build.sh to build your own images, you need
 to make same changes here in deploy.sh. Otherwise, it will still use the
 standard images pushed by me.
 
+Alternatively, you can use
+[docker-compose](https://docs.docker.com/compose/) by doing `cd
+deploy; docker-compose up`. Note that you may want to change the
+**PREFIX** in `deploy/docker-compose.yml` if you don't want to use the
+images from Docker Index.
+
 ## Notes
 
 Docker-Zipkin starts the services in their own container: zipkin-cassandra,
@@ -37,6 +43,13 @@ respective line in deploy.sh to map the port.
 All images with the exception of zipkin-cassandra are sharing a base image:
 zipkin-base. zipkin-base and zipkin-cassandra is built on debian:sid.
 
+`build.sh` performs some fairly intensive tasks, the heaviest of which is running
+gradle. Long story short, make sure your Docker machine has 4GB memory.
+
+Ex. If you are literally running build.sh locally..
+```bash
+$ docker-machine create --driver virtualbox --virtualbox-memory "4096" dev
+```
 ## Author
 
 Zero Cho <itszero@gmail.com>
