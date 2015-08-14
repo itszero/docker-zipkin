@@ -18,8 +18,8 @@ sed -i s/Xss180k/Xss256k/ /etc/cassandra/cassandra-env.sh
 sleep 10
 
 echo "*** Importing Scheme"
-wget https://raw.github.com/openzipkin/zipkin/master/zipkin-cassandra/src/schema/cassandra-schema.txt
-cassandra-cli -host localhost -port 9160 -f cassandra-schema.txt
+wget https://raw.githubusercontent.com/openzipkin/zipkin/master/zipkin-cassandra-core/src/main/resources/cassandra-schema-cql3.txt
+cqlsh --debug -f cassandra-schema-cql3.txt localhost
 
 echo "*** Stopping Cassandra"
 killall java
