@@ -5,7 +5,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 PREFIX="itszero/zipkin-"
-IMAGES=("base" "cassandra" "collector" "query" "web")
+IMAGES=("base" "cassandra" "cassandra-k8s" "collector" "query" "web")
 
 for image in ${IMAGES[@]}; do
   pushd "../$image"

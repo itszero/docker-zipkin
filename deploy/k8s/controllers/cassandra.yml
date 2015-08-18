@@ -1,0 +1,23 @@
+apiVersion: "v1"
+kind: "ReplicationController"
+metadata:
+  name: "zipkin-cassandra"
+spec:
+  replicas: 1
+  selector:
+    app: "zipkin-cassandra"
+  template:
+    metadata:
+      labels:
+        app: "zipkin-cassandra"
+    spec:
+      containers:
+        - name: "cassandra"
+          image: "itszero/zipkin-cassandra-k8s"
+          ports:
+            - containerPort: 7000
+              name: "internode"
+            - containerPort: 9042
+              name: "cql"
+            - containerPort: 9160
+              name: "thrift"

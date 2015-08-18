@@ -1,0 +1,14 @@
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "zipkin-cassandra"
+spec:
+  selector:
+    app: "zipkin-cassandra"
+  ports:
+    - port: 7000
+      name: "internode"
+    - port: 9042
+      name: "cql"
+    - port: 9160
+      name: "thrift"

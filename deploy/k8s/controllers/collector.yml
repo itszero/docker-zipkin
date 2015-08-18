@@ -1,0 +1,18 @@
+apiVersion: "v1"
+kind: "ReplicationController"
+metadata:
+  name: "zipkin-collector"
+spec:
+  replicas: 1
+  selector:
+    app: "zipkin-collector"
+  template:
+    metadata:
+      labels:
+        app: "zipkin-collector"
+    spec:
+      containers:
+        - name: "collector"
+          image: "itszero/zipkin-collector"
+          ports:
+            - containerPort: 9410

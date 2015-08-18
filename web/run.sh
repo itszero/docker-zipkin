@@ -1,7 +1,10 @@
 #!/bin/bash
 if [[ -z $QUERY_PORT_9411_TCP_ADDR ]]; then
-  echo "** ERROR: You need to link the query service as query."
-  exit 1
+  if [[ -z $ZIPKIN_QUERY_PORT_9411_TCP_ADDR ]]; then
+    echo "** ERROR: You need to link the query service as query or zipkin-query."
+    exit 1
+  fi
+  QUERY_PORT_9411_TCP_ADDR=$ZIPKIN_QUERY_PORT_9411_TCP_ADDR
 fi
 
 QUERY_ADDR="${QUERY_PORT_9411_TCP_ADDR}:9411"
