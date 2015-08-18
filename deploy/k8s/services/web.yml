@@ -1,0 +1,9 @@
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "zipkin-web"
+spec:
+  selector:
+    app: "zipkin-web"
+  ports:
+    - port: 8080

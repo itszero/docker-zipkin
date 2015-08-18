@@ -11,6 +11,8 @@ Please run `cd deploy; ./build.sh` to build the images on your own computer.
 Use [docker-compose](https://docs.docker.com/compose/) by doing `cd
 deploy; docker-compose up`.
 
+There are also a set of Kubernetes controller and service definitions in `deploy/k8s` that use a ["cloud-native" build of Cassandra](https://github.com/kubernetes/kubernetes/blob/release-1.0/examples/cassandra/README.md).
+
 ## Notes
 
 Docker-Zipkin starts the services in their own container: zipkin-cassandra,
@@ -34,7 +36,7 @@ $ docker-machine create --driver virtualbox --virtualbox-memory "4096" dev
 
 `zipkin-collector` and `zipkin-query` store and retrieve spans from Cassandra, using its native protocol. Specify a list of one or more Cassandra nodes listening on port 9042, via the comma-separated environment variable `CASSANDRA_CONTACT_POINTS`.
 
-ex. 
+ex.
 ```bash
 docker run -d -p 9410:9410 -p 9900:9900 --name="zipkin-collector" -e "CASSANDRA_CONTACT_POINTS=node1,node2,node3" "itszero/zipkin-collector:latest"
 ```

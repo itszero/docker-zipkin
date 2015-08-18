@@ -1,9 +1,12 @@
 #!/bin/bash
 if [[ -z $CASSANDRA_CONTACT_POINTS ]]; then
-  if [[ -z $DB_PORT_9042_TCP_ADDR ]]; then  
-    echo "** ERROR: You need to link container with Cassandra container or specify CASSANDRA_CONTACT_POINTS env var."
-    echo "DB_PORT_9042_TCP_ADDR (container link) or CASSANDRA_CONTACT_POINTS should contain a comma separated list of Cassandra contact points"
-    exit 1
+  if [[ -z $DB_PORT_9042_TCP_ADDR ]]; then
+    if [[ -z $ZIPKIN_CASSANDRA_PORT_9042_TCP_ADDR ]]; then
+      echo "** ERROR: You need to link container with Cassandra container or specify CASSANDRA_CONTACT_POINTS env var."
+      echo "DB_PORT_9042_TCP_ADDR (container link), ZIPKIN_CASSANDRA_PORT_9042_TCP_ADDR (Kubernetes service link) or CASSANDRA_CONTACT_POINTS should contain a comma separated list of Cassandra contact points"
+      exit 1
+    fi
+    DB_PORT_9042_TCP_ADDR=$ZIPKIN_CASSANDRA_PORT_9042_TCP_ADDR
   fi
   CASSANDRA_CONTACT_POINTS=$DB_PORT_9042_TCP_ADDR
 fi
