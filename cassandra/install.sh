@@ -11,7 +11,7 @@ mv dsc-cassandra-$CASSANDRA_VERSION /cassandra
 
 echo "*** Starting Cassandra"
 sed -i s/Xss180k/Xss256k/ /cassandra/conf/cassandra-env.sh
-/usr/sbin/cassandra
+/cassandra/bin/cassandra
 
 timeout=300
 while [[ "$timeout" -gt 0 ]] && ! cqlsh -e 'SHOW VERSION' localhost >/dev/null 2>/dev/null; do
