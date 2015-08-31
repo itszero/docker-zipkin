@@ -1,4 +1,4 @@
-FROM jeanblanchard/java:serverjre-8
+FROM delitescere/java:8
 MAINTAINER OpenZipkin "http://zipkin.io/"
 
 RUN apk update && apk add netcat-openbsd curl
