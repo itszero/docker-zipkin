@@ -1,7 +1,7 @@
 # docker-zipkin
 
-Dockerfiles for starting a Zipkin instance backed by Cassandra. Automatically built images are available on Docker Hub
-under the [OpenZipkin](https://hub.docker.com/u/openzipkin/) organization.
+Dockerfiles for starting a Zipkin instance backed by Cassandra. Automatically built images are available on Quay.io
+under the [OpenZipkin](https://quay.io/organization/openzipkin) organization.
 
 ## Running
 

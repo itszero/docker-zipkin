@@ -1,51 +1,48 @@
 # Releasing a New Version
 
-This document describes how to release a new set of Docker images for OpenZipkin.
+This document describes how to release a new set of Docker images for OpenZipkin. The images are built automatically
+on [quay.io](https://quay.io), a service similar to Docker Hub.
 
-1. **Update the Build Settings of the automated builds**
+## Tag structure
 
-   Update the (git tag) - (docker tag) mapping on the Build Settings page of each affected project on Docker Hub.
-   These are, unless something special happens: [`zipkin-base`](https://hub.docker.com/r/openzipkin/zipkin-base/~/settings/automated-builds/),
-   [`zipkin-cassandra`](https://hub.docker.com/r/openzipkin/zipkin-cassandra/~/settings/automated-builds/),
-   [`zipkin-collector`](https://hub.docker.com/r/openzipkin/zipkin-collector/~/settings/automated-builds/),
-   [`zipkin-query`](https://hub.docker.com/r/openzipkin/zipkin-query/~/settings/automated-builds/), and
-   [`zipkin-web`](https://hub.docker.com/r/openzipkin/zipkin-web/~/settings/automated-builds/).
+ * Don't use `-rc` tags; in this special case, it's perfectly fine to move tags around.
+ * Create a tag for each sub-minor version, for example `1.4.1`
+ * Create a tag for each minor version, for example `1.4`, and update it to the latest sub-minor under it.
+ * If / when  we introduce a new major release, create tags for each major release (`1` and `2` for example),
+   and keep them up-to-date with their latest minor.
 
-    The tag mappings should look as follows:
+## Release process
 
-  * Subminor releases (`1.2.2` -> `1.2.3`)
-    * Create a new docker tag `1.2.3` pointing to the git tag you'll create (probably `1.2.3-rc1` on the first try)
-    * Change the docker tag `1.2` to point to the git same git tag
-  * Minor releases (`1.2.2` -> `1.3.1`)
-    * Create a new docker tag `1.3` pointing to the git tag you'll create (probably `1.3.1-rc1` on the first try)
-    * Create a new docker tag `1.3.1` pointing to the same git tag
+The examples below will use the release number `1.4.1`.
 
 1. **Bump the `ZIPKIN_VERSION` ENV var in `zipkin-base`**
 
-   This will be used in various install scripts to pull in the right Zipkin release.
+   This will be used in various install scripts to pull in the right Zipkin release. Commit, push.
+
+1. **Create, push the git tag `base-1.4.1`**
+
+   Tags starting with `base-` trigger a build for `zipkin-base`, and nothing else.
+
+1. **Wait for `zipkin-base`**
+
+   You can track all the builds of `zipkin-base` [here](https://quay.io/repository/openzipkin/zipkin-base?tab=builds)
 
 1. **Bump the version in `FROM` statement in `Dockerfile`s**
 
    For the projects that depend on `zipkin-base`, change their `Dockerfile`s to start building `FROM` the tag
-   that will be created by this release. These are, unless something special happens: `cassandra`, `collector`, `query`, and `web`.
-   At this point in time the images are not buildable, but that's fine. Sequencing the release steps this way
-   saves some manual work, reducing the chance of mistakes (thus further saving manual work).
+   `base-1.4.1`. These are, unless something special happens: `cassandra`, `collector`, `query`, and `web`.
+   Commit, push.
 
-1. **Create, push the git tag**
+1. **Create, push the git tag `1.4.1`**
 
-   Make extra sure it's the same git tag you configured for the automated builds. Before pushing may be a good time
-   to verify that the affected automated builds all have the same Build Settings.
-
-   This starts the build of `zipkin-base`, which you can track under [openzipkin/zipkin-base](https://hub.docker.com/r/openzipkin/zipkin-base/builds/)
-
-1. **Wait for `zipkin-base`**
-
-   Once that's finished, it automatically triggers the build of `zikpin-cassandra`, `zipkin-collector`, `zipkin-query`, and `zipkin-web`.
-   They'll use the newly built base image, since you've already changed their `FROM` statements to make it so.
+   Tags starting with a number trigger a build on `zipkin-cassandra`, `zipkin-collector`, `zipkin-query`, and `zipkin-web`.
 
 1. **Wait for the rest of the images**
 
-   As usual, you want to wait for: `zipkin-cassandra`, `zipkin-collector`, `zipkin-query`, and `zipkin-web`.
+   As usual, you want to wait for: [`zipkin-cassandra`](https://quay.io/repository/openzipkin/zipkin-cassandra?tab=builds),
+   [`zipkin-collector`](https://quay.io/repository/openzipkin/zipkin-collector?tab=builds),
+   [`zipkin-query`](https://quay.io/repository/openzipkin/zipkin-query?tab=builds), and
+   [`zipkin-web`](https://quay.io/repository/openzipkin/zipkin-web?tab=builds).
 
 1. **Test the new images**
 
@@ -58,3 +55,8 @@ This document describes how to release a new set of Docker images for OpenZipkin
 
    Congratulations, the intersection of the sets (OpenZipkin users) and (Docker users) can now enjoy the latest
    and greatest Zipkin release!
+
+## Room for automation
+
+ * Managing the tags ("make this commit `1.4.1`" would update the tags `1`, `1.4` and `1.4.1`)
+ * The whole release process. Quay.io has a promising API doc at http://docs.quay.io/api/swagger/
