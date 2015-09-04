@@ -1,10 +1,7 @@
-FROM debian:sid
+FROM delitescere/java:8
 MAINTAINER OpenZipkin "http://zipkin.io/"
 
-RUN apt-get update && apt-get install -y \
-  curl \
-  openjdk-8-jre-headless \
-  netcat
+RUN apk update && apk add netcat-openbsd curl
 
 ENV ZIPKIN_REPO https://jcenter.bintray.com
 ENV ZIPKIN_VERSION 1.5.1

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 if [[ -z $CASSANDRA_CONTACT_POINTS ]]; then
   if [[ -z $DB_PORT_9042_TCP_ADDR ]]; then  
     echo "** ERROR: You need to link container with Cassandra container or specify CASSANDRA_CONTACT_POINTS env var."
