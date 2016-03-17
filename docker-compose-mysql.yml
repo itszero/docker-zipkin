@@ -2,6 +2,22 @@ mysql:
   image: openzipkin/zipkin-mysql:1.37.0
   ports:
     - 3306:3306
+collector:
+  image: openzipkin/zipkin-collector:1.37.0
+  environment:
+    - TRANSPORT_TYPE=scribe
+    - STORAGE_TYPE=mysql
+  expose:
+    # The scribe thrift api listens on this port
+    - 9410
+    # Admin interface is under the http path /admin
+    # https://twitter.github.io/twitter-server/Features.html#http-admin-interface
+    - 9900
+  ports:
+    - 9410:9410
+    - 9900:9900
+  links:
+    - mysql:storage
 query:
   image: openzipkin/zipkin-query:1.37.0
   environment:
