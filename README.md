@@ -10,10 +10,30 @@
 
 This repository contains the Docker build definition and release process for
 [openzipkin/zipkin](https://github.com/openzipkin/zipkin). It also contains
-test images for transport and storage backends such as Cassandra.
+test images for transport and storage backends such as Kafka or Cassandra.
 
 Automatically built images are available on Quay.io under the [OpenZipkin](https://quay.io/organization/openzipkin) organization,
 and are mirrored to [Docker Hub](https://hub.docker.com/u/openzipkin/).
+
+## Regarding production usage
+
+The only images OpenZipkin provides for production use are:
+* [openzipkin/zipkin](./zipkin): The core server image that hosts the Zipkin UI, Api and Collector features.
+* [openzipkin/zipkin-dependencies](https://github.com/openzipkin/docker-zipkin-dependencies): pre-aggregates data such that http://your_host:9411/dependency shows links between services.
+
+If you are using these images and run into problems, please raise an issue or
+join [gitter](https://gitter.im/openzipkin/zipkin).
+
+The other images here, and docker-compose, are for development and exploration
+purposes. For example, they aim to help you integrate an entire zipkin system
+for testing purposes, without having to understand how everything works, and
+without having to download gigabytes of files.
+
+For example, `openzipkin/zipkin-cassandra` was not designed for real usage.
+You'll notice it has no configuration available to run more than one node
+sensibly, neither does it handle file systems as one would "in real life". We
+expect production users to use canonical images for storage or transports like
+Kafka, and only those testing or learning zipkin to use the ones we have here.
 
 ## Running
 
@@ -60,27 +80,27 @@ View the web UI at $(docker ip):8080.
 To see specific traces in the UI, select "zipkin-server" in the dropdown and
 then click the "Find Traces" button.
 
-### Cassandra
+### MySQL
 
 The default docker-compose configuration defined in `docker-compose.yml` is
-backed by a single-node Cassandra. This configuration starts `zipkin`,
-`zipkin-cassandra` and `zipkin-dependencies` (cron job) in their own containers.
+backed by MySQL. This configuration starts `zipkin`, `zipkin-mysql` and
+`zipkin-dependencies` (cron job) in their own containers.
 
-### MySQL
+### Cassandra
 
 The docker-compose configuration can be extended to use MySQL instead of
 Cassandra, using the `docker-compose-mysql.yml` file. That file employs
 [docker-compose overrides](https://docs.docker.com/compose/extends/#multiple-compose-files)
 to swap out one storage container for another.
 
-To start the MySQL-backed configuration, run:
+To start the Cassandra-backed configuration, run:
 
-    $ docker-compose -f docker-compose.yml -f docker-compose-mysql.yml up
+    $ docker-compose -f docker-compose.yml -f docker-compose-cassandra.yml up
 
 ### Elasticsearch
 
 The docker-compose configuration can be extended to use Elasticsearch instead of
-Cassandra, using the `docker-compose-elasticsearch.yml` file. That file employs
+MySQL, using the `docker-compose-elasticsearch.yml` file. That file employs
 [docker-compose overrides](https://docs.docker.com/compose/extends/#multiple-compose-files)
 to swap out one storage container for another.
 
@@ -95,7 +115,7 @@ using the `docker-compose-kafka.yml` file. That file employs
 [docker-compose overrides](https://docs.docker.com/compose/extends/#multiple-compose-files)
 to add a Kafka+ZooKeeper container and relevant settings.
 
-To start the Cassandra+Kafka configuration, run:
+To start the MySQL+Kafka configuration, run:
 
     $ docker-compose -f docker-compose.yml -f docker-compose-kafka.yml up
 
