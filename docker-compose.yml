@@ -34,10 +34,8 @@ services:
     ports:
       # Listen port for the Scribe transport
       - 9410:9410
-      # Historical port used for the Zipkin HTTP Api
+      # Port used for the Zipkin UI and HTTP Api
       - 9411:9411
-      # Zipkin UI used to be on a separate process listening on port 8080
-      - 8080:9411
     depends_on:
       - storage
 

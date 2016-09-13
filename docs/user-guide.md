@@ -73,24 +73,24 @@ Run `docker-compose up` in the docker-zipkin directory (so it picks up the `dock
 Now `docker ps` should display something like
 
 ```
-CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS              PORTS                                                       NAMES
-568ec2927e9d        openzipkin/zipkin:1.1.4              "/bin/sh -c 'test -n "   19 seconds ago      Up 18 seconds       0.0.0.0:9410-9411->9410-9411/tcp, 0.0.0.0:8080->9411/tcp    zipkin
-2bc882b145aa        openzipkin/zipkin-cassandra:1.1.4   "/bin/sh -c /usr/loca"   19 seconds ago      Up 19 seconds       7000-7001/tcp, 7199/tcp, 9160/tcp, 0.0.0.0:9042->9042/tcp   cassandra
+CONTAINER ID        IMAGE                            COMMAND                  CREATED             STATUS              PORTS                              NAMES
+82d09c0b6244        openzipkin/zipkin:1.11.0         "/bin/sh -c 'test -n "   36 seconds ago      Up 36 seconds       0.0.0.0:9410-9411->9410-9411/tcp   zipkin
+81dbabc16591        openzipkin/zipkin-dependencies   "crond -f"               12 hours ago        Up 36 seconds                                          dependencies
+88fb6ac58893        openzipkin/zipkin-mysql:1.11.0   "/bin/sh -c /mysql/ru"   12 hours ago        Up 36 seconds       0.0.0.0:3306->3306/tcp             mysql
 ```
 
-Zipkin listens on a few ports: 8080 (web ui), 9411 (http api), 9410 (scribe collector)
+Zipkin listens on a couple ports: 9411 (web ui and http api), 9410 (scribe collector)
 
 ```sh
 $ docker port zipkin
 9410/tcp -> 0.0.0.0:9410
-9411/tcp -> 0.0.0.0:8080
 9411/tcp -> 0.0.0.0:9411
 ```
 
 But you can't simply access these using localhost because
 > “[...] your DOCKER_HOST address is not the localhost address (0.0.0.0) but is instead the address of the your Docker VM.” [→ source](http://docs.docker.com/installation/mac/#example-of-docker-on-mac-os-x)
 
-To get the proper ip run `docker-machine ip default` and access it on port 8080.
+To get the proper ip run `docker-machine ip default` and access it on port 9411.
 
 Zipkin's top page should come up!
 

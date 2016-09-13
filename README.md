@@ -75,7 +75,7 @@ To start the default docker-compose configuration, run:
 
     $ docker-compose up
 
-View the web UI at $(docker ip):8080.
+View the web UI at $(docker ip):9411.
 
 To see specific traces in the UI, select "zipkin-server" in the dropdown and
 then click the "Find Traces" button.
