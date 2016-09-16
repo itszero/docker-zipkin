@@ -1,8 +1,8 @@
 # This file uses the version 2 docker-compose file format, described here:
 # https://docs.docker.com/compose/compose-file/#version-2
 #
-# It extends the default configuration from docker-compose.yml to run the
-# zipkin-mysql container instead of the zipkin-cassandra container.
+# It extends the default configuration from docker-compose.yml to add a test
+# kafka server, which is used as a span transport.
 
 version: '2'
 

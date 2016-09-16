@@ -32,8 +32,8 @@ started_at=$($date +%s)
 ## Read input and env
 release_tag="$1"
 # Service images
-images="${IMAGES:-zipkin-cassandra zipkin-elasticsearch zipkin-kafka zipkin-mysql zipkin}"
-dirs="${DIRS:-cassandra elasticsearch kafka mysql zipkin}"
+images="${IMAGES:-zipkin-cassandra zipkin-elasticsearch zipkin-kafka zipkin-ui zipkin-mysql zipkin}"
+dirs="${DIRS:-cassandra elasticsearch kafka ui mysql zipkin}"
 # Remotes, auth
 docker_organization="${DOCKER_ORGANIZATION:-openzipkin}"
 quayio_oauth2_token="$QUAYIO_OAUTH2_TOKEN"

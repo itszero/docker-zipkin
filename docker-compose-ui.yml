@@ -1,0 +1,16 @@
+# This file uses the version 2 docker-compose file format, described here:
+# https://docs.docker.com/compose/compose-file/#version-2
+#
+# It extends the default configuration from docker-compose.yml, hosting the
+# ui on port 80 using NGINX
+
+version: '2'
+
+services:
+  zipkin-ui:
+    build: zipkin-ui
+    container_name: zipkin-ui
+    ports:
+      - 80:80
+    depends_on:
+      - zipkin
