@@ -58,7 +58,7 @@ When in docker, the following environment variables also apply
 * `STORAGE_PORT_3306_TCP_ADDR` -- A MySQL node listening on port 3306. This
   environment variable is typically set by linking a container running
   `zipkin-mysql` as "storage" when you start the container.
-* `STORAGE_PORT_9300_TCP_ADDR` -- An Elasticsearch node listening on port 9300. This
+* `STORAGE_PORT_9200_TCP_ADDR` -- An Elasticsearch node listening on port 9200. This
   environment variable is typically set by linking a container running
   `zipkin-elasticsearch` as "storage" when you start the container. This is ignored
   when `ES_HOSTS` or `ES_AWS_DOMAIN` are set.
@@ -109,6 +109,18 @@ to swap out one storage container for another.
 To start the Elasticsearch-backed configuration, run:
 
     $ docker-compose -f docker-compose.yml -f docker-compose-elasticsearch.yml up
+
+#### Elasticsearch 5 and Host setup
+
+The `docker-elasticsearch5` image is [more strict](https://github.com/docker-library/docs/tree/master/elasticsearch#host-setup) about virtual memory. You will need to adjust accordingly (especially if you notice elasticsearch crash!)
+
+```bash
+# If docker is running on your host machine, adjust the kernel setting directly
+$ sudo sysctl -w vm.max_map_count=262144
+
+# If using docker-machine/Docker Toolbox/Boot2Docker, remotely adjust the same
+$ docker-machine ssh default "sudo sysctl -w vm.max_map_count=262144"
+```
 
 #### Elasticsearch Service on Amazon
 

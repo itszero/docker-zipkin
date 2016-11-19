@@ -14,7 +14,7 @@
 FROM openzipkin/jre-full:1.8.0_112
 MAINTAINER OpenZipkin "http://zipkin.io/"
 
-ENV ELASTICSEARCH_VERSION 2.3.4
+ENV ELASTICSEARCH_VERSION 5.0.1
 
 WORKDIR /elasticsearch
 
@@ -27,6 +27,9 @@ RUN curl -SL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-
 # elasticsearch complains if run as root
 USER elasticsearch
 
+COPY config ./config
+
 EXPOSE 9200 9300
 
-CMD /elasticsearch/bin/elasticsearch -Des.network.host=0.0.0.0
+# our image doesn't have bash, so use sh instead, also remove JAVA_OPTS in favor of ES_JAVA_OPTS
+CMD JAVA_OPTS= sh /elasticsearch/bin/elasticsearch
