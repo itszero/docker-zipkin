@@ -10,6 +10,10 @@ tag under them, to let users choose the level of version pinning they prefer.
 
 ## Release using Travis (recommended)
 
+1. Update zipkin-ui/Dockerfile with the latest release
+
+   Commit the latest release of https://github.com/openzipkin/zipkin-ui since version numbers aren't aligned.
+
 1. **Create, push a tag `release-1.1.4`**
 
    This triggers a Travis job on [openzipkin/docker-zipkin](https://travis-ci.org/openzipkin/docker-zipkin)
