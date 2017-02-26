@@ -180,7 +180,24 @@ To start the NGINX configuration, run:
 
 This container doubles as a skeleton for creating proxy configuration around
 Zipkin like authentication, dealing with CORS with zipkin-js apps, or
-terminating SSL. 
+terminating SSL.
+
+### Prometheus
+
+Zipkin comes with a built-in Prometheus metric exporter. The main
+`docker-compose.yml` file starts Prometheus configured to scrape Zipkin, exposes
+it on port `9090`. You can open `$DOCKER_HOST_IP:9090` and start exploring the
+metrics (which are available on the `/promethes` endpoint of Zipkin).
+
+`docker-compose.yml` also starts a Grafana container with authentication
+disabled, exposing it on port 3000. It has built-in support for Prometheus data
+sources, so you can point it to `$DOCKER_HOST_IP:9090`, and experiment with
+creating dashboards. One immediately useful graph can be showing all the
+`response_*` metrics on one graph to show response times per endpoint.
+
+Note that dashboards will be lost between restarts of the containers - again,
+this is not a production environment, it's aimed to help the first steps in
+learning Zipkin.
 
 If you want to run the zipkin-ui standalone against a remote zipkin server, you
 need to set `ZIPKIN_BASE_URL` accordingly:
