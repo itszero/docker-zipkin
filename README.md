@@ -192,8 +192,8 @@ metrics (which are available on the `/promethes` endpoint of Zipkin).
 `docker-compose.yml` also starts a Grafana container with authentication
 disabled, exposing it on port 3000. It has built-in support for Prometheus data
 sources, so you can point it to `$DOCKER_HOST_IP:9090`, and experiment with
-creating dashboards. One immediately useful graph can be showing all the
-`response_*` metrics on one graph to show response times per endpoint.
+creating dashboards. A good starting point would be importing the dashboard
+published at https://grafana.net/dashboards/1598.
 
 Note that dashboards will be lost between restarts of the containers - again,
 this is not a production environment, it's aimed to help the first steps in
