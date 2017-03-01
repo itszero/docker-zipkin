@@ -190,14 +190,12 @@ it on port `9090`. You can open `$DOCKER_HOST_IP:9090` and start exploring the
 metrics (which are available on the `/promethes` endpoint of Zipkin).
 
 `docker-compose.yml` also starts a Grafana container with authentication
-disabled, exposing it on port 3000. It has built-in support for Prometheus data
-sources, so you can point it to `$DOCKER_HOST_IP:9090`, and experiment with
-creating dashboards. A good starting point would be importing the dashboard
-published at https://grafana.net/dashboards/1598.
-
-Note that dashboards will be lost between restarts of the containers - again,
-this is not a production environment, it's aimed to help the first steps in
-learning Zipkin.
+disabled, exposing it on port 3000. On startup it's configured with the
+Prometheus instance started by `docker-compose` as a data source, and imports
+the dashboard published at https://grafana.net/dashboards/1598. This means that,
+after running `docker-compose up`, you can open
+`$DOCKER_IP:3000/dashboard/db/zipkin-prometheus` and play around with the
+dashboard.
 
 If you want to run the zipkin-ui standalone against a remote zipkin server, you
 need to set `ZIPKIN_BASE_URL` accordingly:
