@@ -187,7 +187,7 @@ terminating SSL.
 Zipkin comes with a built-in Prometheus metric exporter. The main
 `docker-compose.yml` file starts Prometheus configured to scrape Zipkin, exposes
 it on port `9090`. You can open `$DOCKER_HOST_IP:9090` and start exploring the
-metrics (which are available on the `/promethes` endpoint of Zipkin).
+metrics (which are available on the `/prometheus` endpoint of Zipkin).
 
 `docker-compose.yml` also starts a Grafana container with authentication
 disabled, exposing it on port 3000. On startup it's configured with the
