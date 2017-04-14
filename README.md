@@ -167,6 +167,15 @@ This container doubles as a skeleton for creating proxy configuration around
 Zipkin like authentication, dealing with CORS with zipkin-js apps, or
 terminating SSL. 
 
+If you want to run the zipkin-ui standalone against a remote zipkin server, you
+need to set `ZIPKIN_BASE_URL` accordingly:
+
+```bash
+$ docker run -d -p 80:80 \
+  -e ZIPKIN_BASE_URL=http://myfavoritezipkin:9411 \
+  openzipkin/zipkin-ui
+```
+
 ### Legacy
 
 The docker-compose files described above use version 2 of the docker-compose
