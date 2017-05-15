@@ -27,11 +27,12 @@ mv kafka_$SCALA_VERSION-$KAFKA_VERSION/* .
 # Set explicit, basic configuration
 cat > config/server.properties <<-EOF
 broker.id=0
-port=9092
 zookeeper.connect=127.0.0.1:2181
 replica.socket.timeout.ms=1500
 log.dirs=/kafka/logs
 auto.create.topics.enable=true
+listeners=PLAINTEXT://:9092
+advertised.listeners=PLAINTEXT://kafka-zookeeper:9092
 EOF
 
 # create runit config, dependent on zookeeper, that advertises the container ip
@@ -39,11 +40,6 @@ mkdir -p /etc/service/kafka
 cat > /etc/service/kafka/run <<-"EOF"
 #!/bin/sh
 sv start zookeeper || exit 1
-if [[ -z "$KAFKA_ADVERTISED_HOST_NAME" ]]; then
-  echo advertised.host.name=$(route -n | awk '/UG[ \t]/{print $2}') >> /kafka/config/server.properties
-else
-  echo advertised.host.name=$KAFKA_ADVERTISED_HOST_NAME >> /kafka/config/server.properties
-fi
 exec sh /kafka/bin/kafka-run-class.sh -name kafkaServer -loggc kafka.Kafka /kafka/config/server.properties
 EOF
 chmod +x /etc/service/kafka/run

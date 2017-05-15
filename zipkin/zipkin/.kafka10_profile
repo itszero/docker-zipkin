@@ -1,0 +1,9 @@
+#!/bin/sh
+
+LOADER_PATH="collector-kafka10-module/,collector-kafka10-module/lib"
+export LOADER_PATH
+[[ ! -z "$LOADER_PATH" ]] && echo "Loader path: $LOADER_PATH"
+
+SPRING_PROFILES=kafka
+export SPRING_PROFILES
+[[ ! -z "$SPRING_PROFILES" ]] && echo "Active spring profiles: $SPRING_PROFILES"

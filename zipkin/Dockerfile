@@ -30,4 +30,6 @@ RUN curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-server/$ZIPKIN_VERSION/zipkin-se
 
 EXPOSE 9410 9411
 
-CMD test -n "$STORAGE_TYPE" && source .${STORAGE_TYPE}_profile; java ${JAVA_OPTS} -cp . org.springframework.boot.loader.JarLauncher
+CMD test -n "$STORAGE_TYPE" && source .${STORAGE_TYPE}_profile; \
+    test -n "$KAFKA_BOOTSTRAP_SERVERS" && source .kafka10_profile; \
+    java ${JAVA_OPTS} -Dloader.path="${LOADER_PATH}" -Dspring.profiles.active="${SPRING_PROFILES}" -cp . org.springframework.boot.loader.PropertiesLauncher
