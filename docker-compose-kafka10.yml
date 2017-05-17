@@ -11,6 +11,9 @@ services:
     build: kafka
     image: openzipkin/zipkin-kafka
     container_name: kafka-zookeeper
+    environment:
+      # corresponds to your docker machine and your producer's broker list
+      - KAFKA_ADVERTISED_HOST_NAME=192.168.99.100
     ports:
       - 2181:2181
       - 9092:9092
