@@ -2,7 +2,7 @@
 FROM openzipkin/jre-full:1.8.0_121
 MAINTAINER OpenZipkin "http://zipkin.io/"
 
-ENV ZIPKIN_VERSION 1.25.0
+ENV ZIPKIN_VERSION 1.26.0
 
 # Temporarily hard-code zipkin's configuration to a class that looks up the container's IP
 ADD ZipkinConfigurationLoader.class /cassandra/build/classes/main/ZipkinConfigurationLoader.class
