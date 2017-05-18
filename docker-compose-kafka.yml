@@ -8,7 +8,6 @@ version: '2'
 
 services:
   kafka-zookeeper:
-    build: kafka
     image: openzipkin/zipkin-kafka
     container_name: kafka-zookeeper
     environment:

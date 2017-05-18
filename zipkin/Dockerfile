@@ -20,28 +20,21 @@ ENV ZIPKIN_VERSION 1.26.0
 # Use to set heap, trust store or other system properties.
 ENV JAVA_OPTS -Djava.security.egd=file:/dev/./urandom
 
-# install modules that will be layered on top of zipkin-server
-COPY modules/ /modules/
-
-WORKDIR /modules
-
-RUN apk add unzip && \
-    mkdir -p collector-kafka10-module && \
-    curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-autoconfigure-collector-kafka10/$ZIPKIN_VERSION/zipkin-autoconfigure-collector-kafka10-$ZIPKIN_VERSION-module.jar > collector-kafka10-module/collector-kafka10-module.jar && \
-    unzip collector-kafka10-module/collector-kafka10-module.jar -d collector-kafka10-module && \
-    rm collector-kafka10-module/collector-kafka10-module.jar && \
-    apk del unzip
-
 # Add environment settings for supported storage types
 COPY zipkin/ /zipkin/
 WORKDIR /zipkin
 
-RUN curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-server/$ZIPKIN_VERSION/zipkin-server-$ZIPKIN_VERSION-exec.jar > zipkin-server.jar && \
+RUN apk add unzip && \
+    curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-server/$ZIPKIN_VERSION/zipkin-server-$ZIPKIN_VERSION-exec.jar > zipkin-server.jar && \
     unzip zipkin-server.jar && \
-    rm zipkin-server.jar
+    rm zipkin-server.jar && \
+    curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-autoconfigure-collector-kafka10/$ZIPKIN_VERSION/zipkin-autoconfigure-collector-kafka10-$ZIPKIN_VERSION-module.jar > kafka10.jar && \
+    unzip kafka10.jar -d kafka10 && \
+    rm kafka10.jar && \
+    apk del unzip
 
 EXPOSE 9410 9411
 
 CMD test -n "$STORAGE_TYPE" && source .${STORAGE_TYPE}_profile; \
-    test -n "$KAFKA_BOOTSTRAP_SERVERS" && source /modules/.kafka10_profile; \
-    java ${JAVA_OPTS} -Dloader.path="${LOADER_PATH}" -Dspring.profiles.active="${SPRING_PROFILES}" -cp . org.springframework.boot.loader.PropertiesLauncher
+    test -n "$KAFKA_BOOTSTRAP_SERVERS" && JAVA_OPTS="${JAVA_OPTS} -Dloader.path=kafka10 -Dspring.profiles.active=kafka"; \
+    java ${JAVA_OPTS} -cp . org.springframework.boot.loader.PropertiesLauncher
