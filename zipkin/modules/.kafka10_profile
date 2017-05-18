@@ -1,6 +1,6 @@
 #!/bin/sh
 
-LOADER_PATH="collector-kafka10-module/,collector-kafka10-module/lib"
+LOADER_PATH="/modules/collector-kafka10-module/,/modules/collector-kafka10-module/lib"
 export LOADER_PATH
 [[ ! -z "$LOADER_PATH" ]] && echo "Loader path: $LOADER_PATH"
 

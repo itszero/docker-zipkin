@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Built-By: dgrabowski
-Spring-Boot-Classes: 
-Spring-Boot-Lib: lib/
-Spring-Boot-Version: 1.5.3.RELEASE
-Created-By: Apache Maven 3.5.0
-Build-Jdk: 1.8.0_66
-
