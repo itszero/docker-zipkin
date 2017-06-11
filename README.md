@@ -154,14 +154,14 @@ To start the MySQL+Kafka configuration, run:
 
 Then configure the [Kafka 0.10 sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka10/src/main/java/zipkin/reporter/kafka10/KafkaSender.java)
 or [Kafka 0.8 sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka08/src/main/java/zipkin/reporter/kafka08/KafkaSender.java)
-using a `bootstrapServers` value of `192.168.99.100:9092`. 
+using a `bootstrapServers` value of `192.168.99.100:9092`.
 
 By default, this assumes your Docker host IP is 192.168.99.100. If this is
-not the case, adjust `KAFKA_ADVERTISED_HOST_NAME` in `docker-compose-kafka10.yml` 
-and the `bootstrapServers` configuration of the kafka sender to match your 
+not the case, adjust `KAFKA_ADVERTISED_HOST_NAME` in `docker-compose-kafka10.yml`
+and the `bootstrapServers` configuration of the kafka sender to match your
 Docker host IP.
 
-If you prefer to activate the 
+If you prefer to activate the
 [Kafka 0.8 collector](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka)
 use `docker-compose-kafka.yml` instead of `docker-compose-kafka10.yml`:
 
@@ -192,7 +192,7 @@ metrics (which are available on the `/prometheus` endpoint of Zipkin).
 `docker-compose.yml` also starts a Grafana container with authentication
 disabled, exposing it on port 3000. On startup it's configured with the
 Prometheus instance started by `docker-compose` as a data source, and imports
-the dashboard published at https://grafana.net/dashboards/1598. This means that,
+the dashboard published at https://grafana.com/dashboards/1598. This means that,
 after running `docker-compose up`, you can open
 `$DOCKER_IP:3000/dashboard/db/zipkin-prometheus` and play around with the
 dashboard.
