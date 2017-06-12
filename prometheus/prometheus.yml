@@ -34,3 +34,12 @@ scrape_configs:
         regex: '^response_(.*)$'
         replacement: 'http_request_duration_milliseconds'
         target_label: __name__
+      # Received message count
+      - source_labels: [__name__]
+        regex: 'zipkin_collector_(.*)_([^_]*)'
+        replacement: '${2}'
+        target_label: transport
+      - source_labels: [__name__]
+        regex: 'zipkin_collector_(.*)_([^_]*)'
+        replacement: 'zipkin_collector_${1}'
+        target_label: __name__
