@@ -5,6 +5,8 @@
 [![zipkin-cassandra](https://quay.io/repository/openzipkin/zipkin-cassandra/status "zipkin-cassandra")](https://quay.io/repository/openzipkin/zipkin-cassandra)
 [![zipkin-mysql](https://quay.io/repository/openzipkin/zipkin-mysql/status "zipkin-mysql")](https://quay.io/repository/openzipkin/zipkin-mysql)
 [![zipkin-elasticsearch](https://quay.io/repository/openzipkin/zipkin-elasticsearch/status "zipkin-elasticsearch")](https://quay.io/repository/openzipkin/zipkin-elasticsearch)
+[![zipkin-elasticsearch5](https://quay.io/repository/openzipkin/zipkin-elasticsearch5/status "zipkin-elasticsearch5")](https://quay.io/repository/openzipkin/zipkin-elasticsearch5)
+[![zipkin-elasticsearch6](https://quay.io/repository/openzipkin/zipkin-elasticsearch6/status "zipkin-elasticsearch6")](https://quay.io/repository/openzipkin/zipkin-elasticsearch6)
 [![zipkin-kafka](https://quay.io/repository/openzipkin/zipkin-kafka/status "zipkin-kafka")](https://quay.io/repository/openzipkin/zipkin-kafka)
 [![zipkin-ui](https://quay.io/repository/openzipkin/zipkin-ui/status "zipkin-ui")](https://quay.io/repository/openzipkin/zipkin-ui)
 
@@ -110,9 +112,9 @@ To start the Elasticsearch-backed configuration, run:
 
     $ docker-compose -f docker-compose.yml -f docker-compose-elasticsearch.yml up
 
-#### Elasticsearch 5 and Host setup
+#### Elasticsearch 5+ and Host setup
 
-The `docker-elasticsearch5` image is [more strict](https://github.com/docker-library/docs/tree/master/elasticsearch#host-setup) about virtual memory. You will need to adjust accordingly (especially if you notice elasticsearch crash!)
+The `zipkin-elasticsearch5` and `zipkin-elasticsearch6` images are [more strict](https://github.com/docker-library/docs/tree/master/elasticsearch#host-setup) about virtual memory. You will need to adjust accordingly (especially if you notice elasticsearch crash!)
 
 ```bash
 # If docker is running on your host machine, adjust the kernel setting directly
