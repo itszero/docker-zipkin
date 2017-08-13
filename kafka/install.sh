@@ -31,6 +31,7 @@ zookeeper.connect=127.0.0.1:2181
 replica.socket.timeout.ms=1500
 log.dirs=/kafka/logs
 auto.create.topics.enable=true
+offsets.topic.replication.factor=1
 listeners=PLAINTEXT://:9092
 EOF
 
