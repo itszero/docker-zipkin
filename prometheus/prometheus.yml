@@ -14,32 +14,23 @@ scrape_configs:
     metric_relabel_configs:
       # Response code count
       - source_labels: [__name__]
-        regex: '^status_(\d+)_(.*)$'
+        regex: '^counter_status_(\d+)_(.*)$'
         replacement: '${1}'
         target_label: status
       - source_labels: [__name__]
-        regex: '^status_(\d+)_(.*)$'
+        regex: '^counter_status_(\d+)_(.*)$'
         replacement: '${2}'
         target_label: path
       - source_labels: [__name__]
-        regex: '^status_(\d+)_(.*)$'
+        regex: '^counter_status_(\d+)_(.*)$'
         replacement: 'http_requests_total'
-        target_label: __name__
-      # Response time, pending histogram from https://github.com/openzipkin/zipkin/pull/1609
-      - source_labels: [__name__]
-        regex: '^response_(.*)$'
-        replacement: '${1}'
-        target_label: path
-      - source_labels: [__name__]
-        regex: '^response_(.*)$'
-        replacement: 'http_request_duration_milliseconds'
         target_label: __name__
       # Received message count
       - source_labels: [__name__]
-        regex: 'zipkin_collector_(.*)_([^_]*)'
+        regex: '(?:gauge|counter)_zipkin_collector_(.*)_([^_]*)'
         replacement: '${2}'
         target_label: transport
       - source_labels: [__name__]
-        regex: 'zipkin_collector_(.*)_([^_]*)'
+        regex: '(?:gauge|counter)_zipkin_collector_(.*)_([^_]*)'
         replacement: 'zipkin_collector_${1}'
         target_label: __name__
