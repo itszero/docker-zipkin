@@ -17,7 +17,7 @@ services:
     #   - 3306:3306
 
   # The zipkin process services the UI, and also exposes a POST endpoint that
-  # instrumentation can send trace data to. Scribe is enabled by default.
+  # instrumentation can send trace data to. Scribe is disabled by default.
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
