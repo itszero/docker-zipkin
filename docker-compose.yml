@@ -31,7 +31,7 @@ services:
       # Uncomment to enable self-tracing
       # - SELF_TRACING_ENABLED=true
       # Uncomment to enable debug logging
-      # - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG
+      # - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG -Dlogging.level.zipkin2=DEBUG
     ports:
       # Port used for the Zipkin UI and HTTP Api
       - 9411:9411
@@ -54,6 +54,8 @@ services:
       # Add the baked-in username and password for the zipkin-mysql image
       - MYSQL_USER=zipkin
       - MYSQL_PASS=zipkin
+      # Uncomment to see dependency processing logs
+      # - ZIPKIN_LOG_LEVEL=DEBUG
       # Uncomment to adjust memory used by the dependencies job
       # - JAVA_OPTS=-verbose:gc -Xms1G -Xmx1G
     depends_on:

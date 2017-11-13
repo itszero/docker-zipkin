@@ -68,6 +68,11 @@ When in docker, the following environment variables also apply
   environment variable is typically set by linking a container running
   `zipkin-kafka` as "kafka" when you start the container.
 
+For example, to add debug logging, set JAVA_OPTS as shown in our [docker-compose](docker-compose.yml) file:
+```yaml
+      - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG -Dlogging.level.zipkin2=DEBUG
+```
+
 ## docker-compose
 
 This project is configured to run docker containers using
