@@ -1,6 +1,7 @@
 import org.apache.cassandra.config.Config;
 import org.apache.cassandra.config.ConfigurationLoader;
 import org.apache.cassandra.config.EncryptionOptions;
+import org.apache.cassandra.config.TransparentDataEncryptionOptions;
 import org.apache.cassandra.config.ParameterizedClass;
 import org.apache.cassandra.exceptions.ConfigurationException;
 
@@ -40,6 +41,7 @@ public final class ZipkinConfigurationLoader implements ConfigurationLoader {
       Map<String, String> parameters = new LinkedHashMap<>();
       parameters.put("seeds", ip);
       config.seed_provider.parameters = parameters;
+      config.enable_user_defined_functions = true;
       return config;
     } catch (SocketException e) {
       throw new ConfigurationException("couldn't get host ip", e);
@@ -74,8 +76,12 @@ public final class ZipkinConfigurationLoader implements ConfigurationLoader {
     config.roles_validity_in_ms = 2000;
     config.permissions_validity_in_ms = 2000;
     config.partitioner = "org.apache.cassandra.dht.Murmur3Partitioner";
+    config.cdc_enabled = false;
     config.disk_failure_policy = Config.DiskFailurePolicy.stop;
     config.commit_failure_policy = Config.CommitFailurePolicy.stop;
+    config.prepared_statements_cache_size_mb = null;
+    config.key_cache_size_in_mb = null;
+    config.key_cache_save_period = 14400;
     config.row_cache_size_in_mb = 0;
     config.row_cache_save_period = 0;
     config.counter_cache_size_in_mb = null;
@@ -103,23 +109,14 @@ public final class ZipkinConfigurationLoader implements ConfigurationLoader {
     config.listen_address = "localhost";
     config.start_native_transport = true;
     config.native_transport_port = 9042;
-    config.start_rpc = false;
     config.rpc_address = "localhost";
-    config.rpc_port = 9160;
     config.rpc_keepalive = true;
-    config.rpc_server_type = "sync";
-    config.thrift_framed_transport_size_in_mb = 15;
     config.incremental_backups = false;
     config.snapshot_before_compaction = false;
     config.auto_snapshot = true;
-    config.tombstone_warn_threshold = 1000;
-    config.tombstone_failure_threshold = 100000;
     config.column_index_size_in_kb = 64;
-    config.batch_size_warn_threshold_in_kb = 5;
-    config.batch_size_fail_threshold_in_kb = 50;
-    config.unlogged_batch_across_partitions_warn_threshold = 10;
+    config.column_index_cache_size_in_kb = 2;
     config.compaction_throughput_mb_per_sec = 16;
-    config.compaction_large_partition_warning_threshold_mb = 100;
     config.sstable_preemptive_open_interval_in_mb = 50;
     config.read_request_timeout_in_ms = 5000L;
     config.range_request_timeout_in_ms = 10000L;
@@ -128,12 +125,13 @@ public final class ZipkinConfigurationLoader implements ConfigurationLoader {
     config.cas_contention_timeout_in_ms = 1000L;
     config.truncate_request_timeout_in_ms = 60000L;
     config.request_timeout_in_ms = 10000L;
+    config.slow_query_log_timeout_in_ms = 500L;
     config.cross_node_timeout = false;
     config.endpoint_snitch = "SimpleSnitch";
     config.dynamic_snitch_update_interval_in_ms = 100;
     config.dynamic_snitch_reset_interval_in_ms = 600000;
     config.dynamic_snitch_badness_threshold = 0.1;
-    config.request_scheduler = "org.apache.cassandra.scheduler.NoScheduler";
+
     EncryptionOptions.ServerEncryptionOptions server_encryption_options = new EncryptionOptions.ServerEncryptionOptions();
     server_encryption_options.internode_encryption = EncryptionOptions.ServerEncryptionOptions.InternodeEncryption.none;
     server_encryption_options.keystore = "conf/.keystore";
@@ -141,13 +139,54 @@ public final class ZipkinConfigurationLoader implements ConfigurationLoader {
     server_encryption_options.truststore = "conf/.truststore";
     server_encryption_options.truststore_password = "cassandra";
     config.server_encryption_options = server_encryption_options;
+
     EncryptionOptions.ClientEncryptionOptions client_encryption_options = new EncryptionOptions.ClientEncryptionOptions();
     client_encryption_options.enabled = false;
+    client_encryption_options.optional = false;
     client_encryption_options.keystore = "conf/.keystore";
     client_encryption_options.keystore_password = "cassandra";
     config.client_encryption_options = client_encryption_options;
-    config.internode_compression = Config.InternodeCompression.all;
+
+    config.internode_compression = Config.InternodeCompression.dc;
     config.inter_dc_tcp_nodelay = false;
+    config.tracetype_query_ttl = 86400;
+    config.tracetype_repair_ttl = 604800;
+    config.enable_user_defined_functions = false;
+    config.enable_scripted_user_defined_functions = false;
+    config.windows_timer_interval = 1;
+
+    TransparentDataEncryptionOptions transparent_data_encryption_options = new TransparentDataEncryptionOptions();
+    transparent_data_encryption_options.enabled = false;
+    transparent_data_encryption_options.chunk_length_kb = 64;
+    transparent_data_encryption_options.cipher = "AES/CBC/PKCS5Padding";
+    transparent_data_encryption_options.key_alias = "testing:1";
+    LinkedHashMap<String, Object> key_provider = new LinkedHashMap<>();
+    key_provider.put("class_name", "org.apache.cassandra.security.JKSKeyProvider");
+    parameters = new LinkedHashMap<>();
+    parameters.put("keystore", "conf/.keystore");
+    parameters.put("keystore_password", "cassandra");
+    parameters.put("store_type", "JCEKS");
+    parameters.put("key_password", "cassandra");
+    key_provider.put("parameters", Arrays.asList(parameters));
+    transparent_data_encryption_options.key_provider = new ParameterizedClass(key_provider);
+    config.transparent_data_encryption_options = transparent_data_encryption_options;
+
+    config.tombstone_warn_threshold = 1000;
+    config.tombstone_failure_threshold = 100000;
+    config.batch_size_warn_threshold_in_kb = 5;
+    config.batch_size_fail_threshold_in_kb = 50;
+    config.unlogged_batch_across_partitions_warn_threshold = 10;
+    config.compaction_large_partition_warning_threshold_mb = 100;
+    config.back_pressure_enabled = false;
+
+    LinkedHashMap<String, Object> back_pressure_strategy = new LinkedHashMap<>();
+    back_pressure_strategy.put("class_name", "org.apache.cassandra.net.RateBasedBackPressure");
+    parameters = new LinkedHashMap<>();
+    parameters.put("high_ratio", "0.90");
+    parameters.put("factor", "5");
+    parameters.put("flow", "FAST");
+    back_pressure_strategy.put("parameters", Arrays.asList(parameters));
+    config.back_pressure_strategy = new ParameterizedClass(back_pressure_strategy);
     return config;
   }
 }
