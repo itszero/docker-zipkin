@@ -1,2 +1,2 @@
 #!/bin/sh
-/cassandra/bin/cassandra -f
+exec /cassandra/bin/cassandra -f

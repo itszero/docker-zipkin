@@ -17,6 +17,6 @@ RUN /usr/local/bin/install
 USER cassandra
 
 ADD run.sh /usr/local/bin/run.sh
-CMD /usr/local/bin/run.sh
+CMD ["/usr/local/bin/run.sh"]
 
 EXPOSE 9160 7000 7001 9042 7199

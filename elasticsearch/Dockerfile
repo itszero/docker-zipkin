@@ -29,4 +29,4 @@ USER elasticsearch
 
 EXPOSE 9200 9300
 
-CMD /elasticsearch/bin/elasticsearch -Des.network.host=0.0.0.0
+CMD ["/elasticsearch/bin/elasticsearch", "-Des.network.host=0.0.0.0"]

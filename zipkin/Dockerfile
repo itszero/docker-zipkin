@@ -37,4 +37,4 @@ EXPOSE 9410 9411
 
 CMD test -n "$STORAGE_TYPE" && source .${STORAGE_TYPE}_profile; \
     test -n "$KAFKA_BOOTSTRAP_SERVERS" && JAVA_OPTS="${JAVA_OPTS} -Dloader.path=kafka10 -Dspring.profiles.active=kafka"; \
-    java ${JAVA_OPTS} -cp . org.springframework.boot.loader.PropertiesLauncher
+    exec java ${JAVA_OPTS} -cp . org.springframework.boot.loader.PropertiesLauncher

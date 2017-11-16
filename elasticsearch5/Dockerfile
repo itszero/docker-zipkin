@@ -32,4 +32,4 @@ COPY config ./config
 EXPOSE 9200 9300
 
 # our image doesn't have bash, so use sh instead, also remove JAVA_OPTS in favor of ES_JAVA_OPTS
-CMD JAVA_OPTS= sh /elasticsearch/bin/elasticsearch
+CMD JAVA_OPTS= exec sh /elasticsearch/bin/elasticsearch

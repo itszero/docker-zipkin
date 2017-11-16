@@ -19,4 +19,4 @@ ADD run.sh /usr/local/bin/nginx.sh
 
 EXPOSE 80
 
-CMD /usr/local/bin/nginx.sh
+CMD ["/usr/local/bin/nginx.sh"]
