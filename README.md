@@ -169,9 +169,9 @@ use `docker-compose-kafka.yml` instead of `docker-compose-kafka10.yml`:
 
 ### UI
 
-The docker-compose configuration can be extended to host the [experimental new
-UI](https://github.com/openzipkin/zipkin-ui) on port 80 using `docker-compose-ui.yml`.
-That file employs [docker-compose overrides](https://docs.docker.com/compose/extends/#multiple-compose-files)
+The docker-compose configuration can be extended to host the UI on port 80
+using the `docker-compose-ui.yml` file. That file employs
+[docker-compose overrides](https://docs.docker.com/compose/extends/#multiple-compose-files)
 to add an NGINX container and relevant settings.
 
 To start the NGINX configuration, run:
