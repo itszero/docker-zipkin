@@ -43,6 +43,9 @@ rm -rf /cassandra/javadoc/ /cassandra/pylib/ /cassandra/tools/ /cassandra/lib/*.
 
 echo "*** Changing to cassandra user"
 adduser -S cassandra
+
+cp -R /cassandra/data/ /cassandra/data-tmp/
+
 chown -R cassandra /cassandra
 
 echo "*** Image build complete"
