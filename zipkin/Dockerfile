@@ -24,7 +24,7 @@ ENV JAVA_OPTS -Djava.security.egd=file:/dev/./urandom
 COPY zipkin/ /zipkin/
 WORKDIR /zipkin
 
-RUN apk add unzip && \
+RUN apk add unzip --no-cache && \
     curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-server/$ZIPKIN_VERSION/zipkin-server-$ZIPKIN_VERSION-exec.jar > zipkin-server.jar && \
     unzip zipkin-server.jar && \
     rm zipkin-server.jar && \
