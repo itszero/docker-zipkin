@@ -44,7 +44,7 @@ rm -rf /cassandra/javadoc/ /cassandra/pylib/ /cassandra/tools/ /cassandra/lib/*.
 echo "*** Changing to cassandra user"
 adduser -S cassandra
 
-cp -R /cassandra/data/ /cassandra/data-tmp/
+cp -R /cassandra/data/ /cassandra/data-backup/
 
 chown -R cassandra /cassandra
 
