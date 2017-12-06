@@ -44,6 +44,7 @@ rm -rf /cassandra/javadoc/ /cassandra/pylib/ /cassandra/tools/ /cassandra/lib/*.
 echo "*** Changing to cassandra user"
 adduser -S cassandra
 
+# Take a backup so that we can safely mount an empty volume over the data directory and maintain the schema
 cp -R /cassandra/data/ /cassandra/data-backup/
 
 chown -R cassandra /cassandra
