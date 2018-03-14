@@ -24,18 +24,13 @@ ENV JAVA_OPTS -Djava.security.egd=file:/dev/./urandom
 COPY zipkin/ /zipkin/
 WORKDIR /zipkin
 
-RUN apk add unzip --no-cache && \
+RUN --no-cache && \
     curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-server/$ZIPKIN_VERSION/zipkin-server-$ZIPKIN_VERSION-exec.jar > zipkin-server.jar && \
     # don't break when unzip finds an extra header https://github.com/openzipkin/zipkin/issues/1932
-    unzip zipkin-server.jar ; \
-    rm zipkin-server.jar && \
     curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-autoconfigure-collector-kafka10/$ZIPKIN_VERSION/zipkin-autoconfigure-collector-kafka10-$ZIPKIN_VERSION-module.jar > kafka10.jar && \
-    unzip kafka10.jar -d kafka10 && \
-    rm kafka10.jar && \
-    apk del unzip
 
 EXPOSE 9410 9411
 
 CMD test -n "$STORAGE_TYPE" && source .${STORAGE_TYPE}_profile; \
-    test -n "$KAFKA_BOOTSTRAP_SERVERS" && JAVA_OPTS="${JAVA_OPTS} -Dloader.path=kafka10 -Dspring.profiles.active=kafka"; \
-    exec java ${JAVA_OPTS} -cp . org.springframework.boot.loader.PropertiesLauncher
+    test -n "$KAFKA_BOOTSTRAP_SERVERS" && JAVA_OPTS="${JAVA_OPTS} -Dloader.path='kafka10.jar,kafka10.jar!/lib' -Dspring.profiles.active=kafka"; \
+    exec java ${JAVA_OPTS} -cp zipkin-server.jar org.springframework.boot.loader.PropertiesLauncher
