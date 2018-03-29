@@ -29,6 +29,9 @@ RUN apk add unzip --no-cache && \
     # don't break when unzip finds an extra header https://github.com/openzipkin/zipkin/issues/1932
     unzip zipkin-server.jar ; \
     rm zipkin-server.jar && \
+    curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-autoconfigure-collector-scribe/$ZIPKIN_VERSION/zipkin-autoconfigure-collector-scribe-$ZIPKIN_VERSION-module.jar > scribe.jar && \
+    unzip scribe.jar -d scribe && \
+    rm scribe.jar && \
     curl -SL $ZIPKIN_REPO/io/zipkin/java/zipkin-autoconfigure-collector-kafka10/$ZIPKIN_VERSION/zipkin-autoconfigure-collector-kafka10-$ZIPKIN_VERSION-module.jar > kafka10.jar && \
     unzip kafka10.jar -d kafka10 && \
     rm kafka10.jar && \
@@ -37,5 +40,6 @@ RUN apk add unzip --no-cache && \
 EXPOSE 9410 9411
 
 CMD test -n "$STORAGE_TYPE" && source .${STORAGE_TYPE}_profile; \
+    test -n "$SCRIBE_ENABLED" && JAVA_OPTS="${JAVA_OPTS} -Dloader.path=scribe -Dspring.profiles.active=scribe"; \
     test -n "$KAFKA_BOOTSTRAP_SERVERS" && JAVA_OPTS="${JAVA_OPTS} -Dloader.path=kafka10 -Dspring.profiles.active=kafka"; \
     exec java ${JAVA_OPTS} -cp . org.springframework.boot.loader.PropertiesLauncher
