@@ -148,29 +148,29 @@ $ docker run -d -p 9411:9411 \
 ### Kafka
 
 The docker-compose configuration can be extended to host a test Kafka broker
-and activate the [Kafka 0.10 collector](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka10)
-using the `docker-compose-kafka10.yml` file. That file employs
+and activate the [Kafka 0.8 collector](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka08)
+using the `docker-compose-kafka.yml` file. That file employs
 [docker-compose overrides](https://docs.docker.com/compose/extends/#multiple-compose-files)
 to add a Kafka+ZooKeeper container and relevant settings.
 
 To start the MySQL+Kafka configuration, run:
 
-    $ docker-compose -f docker-compose.yml -f docker-compose-kafka10.yml up
+    $ docker-compose -f docker-compose.yml -f docker-compose-kafka.yml up
 
-Then configure the [Kafka 0.10 sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka10/src/main/java/zipkin/reporter/kafka10/KafkaSender.java)
-or [Kafka 0.8 sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka08/src/main/java/zipkin/reporter/kafka08/KafkaSender.java)
+Then configure the [Kafka sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka11/src/main/java/zipkin2/reporter/kafka11/KafkaSender.java)
+or [Kafka 0.8 sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka08/src/main/java/zipkin2/reporter/kafka08/KafkaSender.java)
 using a `bootstrapServers` value of `192.168.99.100:9092`.
 
 By default, this assumes your Docker host IP is 192.168.99.100. If this is
-not the case, adjust `KAFKA_ADVERTISED_HOST_NAME` in `docker-compose-kafka10.yml`
+not the case, adjust `KAFKA_ADVERTISED_HOST_NAME` in `docker-compose-kafka.yml`
 and the `bootstrapServers` configuration of the kafka sender to match your
 Docker host IP.
 
 If you prefer to activate the
-[Kafka 0.8 collector](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka)
-use `docker-compose-kafka.yml` instead of `docker-compose-kafka10.yml`:
+[Kafka 0.8 collector](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka08) (which uses ZooKeeper),
+use `docker-compose-kafka08.yml` instead of `docker-compose-kafka.yml`:
 
-    $ docker-compose -f docker-compose.yml -f docker-compose-kafka.yml up
+    $ docker-compose -f docker-compose.yml -f docker-compose-kafka08.yml up
 
 ### UI
 
@@ -227,4 +227,4 @@ All images share a base image, `openzipkin/jre-full`, built on the Alpine image
 [`delitescere/java:8`](https://github.com/delitescere/docker-zulu), which is much
 smaller than the previously used `debian:sid`d image.
 
-If using a provided MySQL server or image, ensure schema and other parameters match the [docs](https://github.com/openzipkin/zipkin/tree/master/zipkin-storage/mysql#applying-the-schema).
+If using a provided MySQL server or image, ensure schema and other parameters match the [docs](https://github.com/openzipkin/zipkin/tree/master/zipkin-storage/mysql-v1#applying-the-schema).

@@ -19,6 +19,6 @@ services:
 
   zipkin:
     environment:
-      - KAFKA_ZOOKEEPER=kafka-zookeeper
+      - KAFKA_BOOTSTRAP_SERVERS=kafka-zookeeper:9092
     depends_on:
       - kafka-zookeeper
