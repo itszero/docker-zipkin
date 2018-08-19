@@ -12,6 +12,7 @@ services:
     container_name: kafka-zookeeper
     environment:
       # corresponds to your docker machine and your producer's broker list
+      # if using a recent version of docker for Mac, set the hostname to host.docker.internal
       - KAFKA_ADVERTISED_HOST_NAME=192.168.99.100
     ports:
       - 2181:2181
