@@ -10,12 +10,16 @@ services:
   kafka-zookeeper:
     image: openzipkin/zipkin-kafka
     container_name: kafka-zookeeper
-    environment:
-      # corresponds to your docker machine and your producer's broker list
-      - KAFKA_ADVERTISED_HOST_NAME=192.168.99.100
+    # If using docker machine, uncomment the below and set your bootstrap
+    # server list to 192.168.99.100:19092
+    # environment:
+      # - KAFKA_ADVERTISED_HOST_NAME=192.168.99.100
     ports:
       - 2181:2181
       - 9092:9092
+      # port 19092 is listening on localhost by default. In normal Docker,
+      # you can set your bootstrap server list to localhost:19092
+      - 19092:19092
 
   zipkin:
     environment:

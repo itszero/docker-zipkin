@@ -159,12 +159,10 @@ To start the MySQL+Kafka configuration, run:
 
 Then configure the [Kafka sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka11/src/main/java/zipkin2/reporter/kafka11/KafkaSender.java)
 or [Kafka 0.8 sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka08/src/main/java/zipkin2/reporter/kafka08/KafkaSender.java)
-using a `bootstrapServers` value of `192.168.99.100:9092`.
+using a `bootstrapServers` value of `host.docker.internal:9092` if your application is a docker container or `localhost:19092` if not, but running on the same host.
 
-By default, this assumes your Docker host IP is 192.168.99.100. If this is
-not the case, adjust `KAFKA_ADVERTISED_HOST_NAME` in `docker-compose-kafka.yml`
-and the `bootstrapServers` configuration of the kafka sender to match your
-Docker host IP.
+If you are using Docker machine, adjust `KAFKA_ADVERTISED_HOST_NAME` in `docker-compose-kafka.yml`
+and the `bootstrapServers` configuration of the kafka sender to match your Docker host IP (ex. 192.168.99.100:9092).
 
 If you prefer to activate the
 [Kafka 0.8 collector](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka08) (which uses ZooKeeper),

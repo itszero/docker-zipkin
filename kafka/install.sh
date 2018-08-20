@@ -32,7 +32,8 @@ replica.socket.timeout.ms=1500
 log.dirs=/kafka/logs
 auto.create.topics.enable=true
 offsets.topic.replication.factor=1
-listeners=PLAINTEXT://:9092
+listeners=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:19092
+listener.security.protocol.map=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
 EOF
 
 # create runit config, dependent on zookeeper, that advertises the container ip
@@ -41,9 +42,10 @@ cat > /etc/service/kafka/run <<-"EOF"
 #!/bin/sh
 sv start zookeeper || exit 1
 if [[ -z "$KAFKA_ADVERTISED_HOST_NAME" ]]; then
-  echo advertised.listeners=PLAINTEXT://$(route -n | awk '/UG[ \t]/{print $2}'):9092 >> /kafka/config/server.properties
+listeners=PLAINTEXT://:9092
+  echo advertised.listeners=PLAINTEXT://$(route -n | awk '/UG[ \t]/{print $2}'):9092,PLAINTEXT_HOST://localhost:19092 >> /kafka/config/server.properties
 else
-  echo "advertised.listeners=PLAINTEXT://${KAFKA_ADVERTISED_HOST_NAME}:9092" >> /kafka/config/server.properties
+  echo "advertised.listeners=PLAINTEXT://${KAFKA_ADVERTISED_HOST_NAME}:9092,PLAINTEXT_HOST://localhost:19092" >> /kafka/config/server.properties
 fi
 exec sh /kafka/bin/kafka-run-class.sh -name kafkaServer -loggc kafka.Kafka /kafka/config/server.properties
 EOF
