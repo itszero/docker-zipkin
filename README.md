@@ -162,7 +162,7 @@ or [Kafka 0.8 sender](https://github.com/openzipkin/zipkin-reporter-java/blob/ma
 using a `bootstrapServers` value of `host.docker.internal:9092` if your application is a docker container or `localhost:19092` if not, but running on the same host.
 
 If you are using Docker machine, adjust `KAFKA_ADVERTISED_HOST_NAME` in `docker-compose-kafka.yml`
-and the `bootstrapServers` configuration of the kafka sender to match your Docker host IP (ex. 192.168.99.100:9092).
+and the `bootstrapServers` configuration of the kafka sender to match your Docker host IP (ex. 192.168.99.100:19092).
 
 If you prefer to activate the
 [Kafka 0.8 collector](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka08) (which uses ZooKeeper),

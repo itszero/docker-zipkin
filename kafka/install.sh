@@ -43,9 +43,11 @@ cat > /etc/service/kafka/run <<-"EOF"
 sv start zookeeper || exit 1
 if [[ -z "$KAFKA_ADVERTISED_HOST_NAME" ]]; then
 listeners=PLAINTEXT://:9092
-  echo advertised.listeners=PLAINTEXT://$(route -n | awk '/UG[ \t]/{print $2}'):9092,PLAINTEXT_HOST://localhost:19092 >> /kafka/config/server.properties
+  # Have internal docker producers and consumers use the normal hostname:9092, and outside docker localhost:19092
+  echo advertised.listeners=PLAINTEXT://${HOSTNAME}:9092,PLAINTEXT_HOST://localhost:19092 >> /kafka/config/server.properties
 else
-  echo "advertised.listeners=PLAINTEXT://${KAFKA_ADVERTISED_HOST_NAME}:9092,PLAINTEXT_HOST://localhost:19092" >> /kafka/config/server.properties
+  # Have internal docker producers and consumers use the normal hostname:9092, and outside docker the advertised host on port 19092
+  echo "advertised.listeners=PLAINTEXT://${HOSTNAME}:9092,PLAINTEXT_HOST://${KAFKA_ADVERTISED_HOST_NAME}:19092" >> /kafka/config/server.properties
 fi
 exec sh /kafka/bin/kafka-run-class.sh -name kafkaServer -loggc kafka.Kafka /kafka/config/server.properties
 EOF
