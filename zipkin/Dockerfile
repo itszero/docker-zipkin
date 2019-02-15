@@ -37,7 +37,7 @@ RUN apk add unzip --no-cache && \
     rm kafka08.jar && \
     apk del unzip
 
-EXPOSE 9410 9411
+EXPOSE 9411 9410
 
 CMD test -n "$STORAGE_TYPE" && source .${STORAGE_TYPE}_profile; \
     test -n "$SCRIBE_ENABLED" && JAVA_OPTS="${JAVA_OPTS} -Dloader.path=scribe -Dspring.profiles.active=scribe"; \
