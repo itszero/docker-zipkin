@@ -14,7 +14,7 @@
 FROM openzipkin/jre-full:1.8.0_191
 MAINTAINER OpenZipkin "http://zipkin.io/"
 
-ENV ELASTICSEARCH_VERSION 5.6.13
+ENV ELASTICSEARCH_VERSION 5.6.14
 
 WORKDIR /elasticsearch
 
