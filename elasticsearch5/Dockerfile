@@ -11,18 +11,29 @@
 # or implied. See the License for the specific language governing permissions and limitations under
 # the License.
 #
-FROM openzipkin/jre-full:1.8.0_191
-MAINTAINER OpenZipkin "http://zipkin.io/"
+
+FROM alpine
 
 ENV ELASTICSEARCH_VERSION 5.6.13
+
+RUN apk add --update curl
 
 WORKDIR /elasticsearch
 
 # single layer to install elasticsearch and the user
 RUN curl -SL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
-    mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/ && \
-    adduser -S elasticsearch && \
-    chown -R elasticsearch /elasticsearch
+    mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
+
+FROM gcr.io/distroless/java:11-debug
+MAINTAINER OpenZipkin "http://zipkin.io/"
+
+ENV ELASTICSEARCH_VERSION 5.6.13
+
+RUN ["/busybox/sh", "-c", "adduser -g '' -D elasticsearch"]
+
+COPY --from=0 --chown=elasticsearch /elasticsearch /elasticsearch
+
+WORKDIR /elasticsearch
 
 # elasticsearch complains if run as root
 USER elasticsearch
@@ -31,5 +42,7 @@ COPY config ./config
 
 EXPOSE 9200 9300
 
-# our image doesn't have bash, so use sh instead, also remove JAVA_OPTS in favor of ES_JAVA_OPTS
-CMD JAVA_OPTS= exec sh /elasticsearch/bin/elasticsearch
+# remove JAVA_OPTS in favor of ES_JAVA_OPTS
+ENV JAVA_OPTS " "
+
+ENTRYPOINT ["/busybox/sh", "/elasticsearch/bin/elasticsearch"]

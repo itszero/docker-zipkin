@@ -11,22 +11,34 @@
 # or implied. See the License for the specific language governing permissions and limitations under
 # the License.
 #
-FROM openzipkin/jre-full:1.8.0_191
+FROM alpine
+
+ENV ELASTICSEARCH_VERSION 2.4.6
+
+RUN apk add --update curl
+
+WORKDIR /elasticsearch
+
+RUN curl -SL https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/$ELASTICSEARCH_VERSION/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
+    mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
+
+FROM gcr.io/distroless/java:11-debug
 MAINTAINER OpenZipkin "http://zipkin.io/"
 
 ENV ELASTICSEARCH_VERSION 2.4.6
 
-WORKDIR /elasticsearch
+RUN ["/busybox/sh", "-c", "adduser -g '' -D elasticsearch"]
 
-# single layer to install elasticsearch and the user
-RUN curl -SL https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/$ELASTICSEARCH_VERSION/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
-    mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/ && \
-    adduser -S elasticsearch && \
-    chown -R elasticsearch /elasticsearch
+COPY --from=0 --chown=elasticsearch /elasticsearch /elasticsearch
+
+# Prevents elasticsearch from enabling default GC options that don't work on Java 11
+ENV ES_GC_OPTS " "
+
+WORKDIR /elasticsearch
 
 # elasticsearch complains if run as root
 USER elasticsearch
 
 EXPOSE 9200 9300
 
-CMD ["/elasticsearch/bin/elasticsearch", "-Des.network.host=0.0.0.0"]
+ENTRYPOINT ["/busybox/sh", "/elasticsearch/bin/elasticsearch", "-Des.network.host=0.0.0.0"]

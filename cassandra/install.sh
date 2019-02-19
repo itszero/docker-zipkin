@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 
+apk add --update --no-cache curl
+
+
 echo "*** Installing Cassandra"
 # DataStax only hosts 3.0 series at the moment
 curl -SL http://archive.apache.org/dist/cassandra/$CASSANDRA_VERSION/apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz | tar xz
@@ -8,6 +11,19 @@ mv apache-cassandra-$CASSANDRA_VERSION/* /cassandra/
 
 echo "*** Installing Python"
 apk add --update --no-cache python
+
+# Default conf for Cassandra 3.x does not work on modern JVMs due to many deprecated flags
+sed -i '/-XX:ThreadPriorityPolicy=42/c\#-XX:ThreadPriorityPolicy=42' /cassandra/conf/jvm.options
+sed -i '/-XX:+UseParNewGC/c\#-XX:+UseParNewGC' /cassandra/conf/jvm.options
+sed -i '/-XX:+UseConcMarkSweepGC/c\#-XX:+UseConcMarkSweepGC' /cassandra/conf/jvm.options
+sed -i '/-XX:+PrintGCDateStamps/c\#-XX:+PrintGCDateStamps' /cassandra/conf/jvm.options
+sed -i '/-XX:+PrintHeapAtGC/c\#-XX:+PrintHeapAtGC' /cassandra/conf/jvm.options
+sed -i '/-XX:+PrintTenuringDistribution/c\#-XX:+PrintTenuringDistribution' /cassandra/conf/jvm.options
+sed -i '/-XX:+PrintGCApplicationStoppedTime/c\#-XX:+PrintGCApplicationStoppedTime' /cassandra/conf/jvm.options
+sed -i '/-XX:+PrintPromotionFailure/c\#-XX:+PrintPromotionFailure' /cassandra/conf/jvm.options
+sed -i '/-XX:+UseGCLogFileRotation/c\#-XX:+UseGCLogFileRotation' /cassandra/conf/jvm.options
+sed -i '/-XX:NumberOfGCLogFiles=10/c\#-XX:NumberOfGCLogFiles=10' /cassandra/conf/jvm.options
+sed -i '/-XX:GCLogFileSize=10M/c\#-XX:GCLogFileSize=10M' /cassandra/conf/jvm.options
 
 # TODO: Add native snappy lib. Native loader stacktraces in the cassandra log as a results, which is distracting.
 

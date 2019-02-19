@@ -1,6 +1,4 @@
-# Share the same base image to reduce layers used in testing
-FROM openzipkin/jre-full:1.8.0_191
-MAINTAINER OpenZipkin "http://zipkin.io/"
+FROM debian:stretch-slim
 
 ENV SCALA_VERSION 2.12
 ENV KAFKA_VERSION 2.1.0
@@ -10,7 +8,20 @@ WORKDIR /kafka
 ADD install.sh /kafka/install
 RUN /kafka/install
 
+# Share the same base image to reduce layers used in testing
+FROM gcr.io/distroless/java:11-debug
+MAINTAINER OpenZipkin "http://zipkin.io/"
+
+ENV SCALA_VERSION 2.12
+ENV KAFKA_VERSION 2.1.0
+ENV ZOOKEEPER_VERSION 3.4.13
+
+WORKDIR /kafka
+
+COPY --from=0 /kafka /kafka
+COPY --from=0 /etc/service /etc/service
+
 # Port 19092 is for connections from the Docker host
 EXPOSE 2181 9092 19092
 
-CMD ["runsvdir", "/etc/service"]
+ENTRYPOINT ["runsv", "/etc/service/kafka"]
