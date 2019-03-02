@@ -8,6 +8,10 @@ WORKDIR /kafka
 ADD install.sh /kafka/install
 RUN /kafka/install
 
+ADD zoo_sample.cfg /kafka/zookeeper/conf/zoo_sample.cfg
+ADD wait-for-zookeeper.sh /kafka/bin
+ADD start.sh /kafka/bin
+
 # Share the same base image to reduce layers used in testing
 FROM gcr.io/distroless/java:11-debug
 MAINTAINER OpenZipkin "http://zipkin.io/"
@@ -24,4 +28,4 @@ COPY --from=0 /etc/service /etc/service
 # Port 19092 is for connections from the Docker host
 EXPOSE 2181 9092 19092
 
-ENTRYPOINT ["runsv", "/etc/service/kafka"]
+ENTRYPOINT ["/busybox/sh", "/kafka/bin/start.sh"]
