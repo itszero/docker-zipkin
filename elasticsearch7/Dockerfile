@@ -11,31 +11,22 @@
 # or implied. See the License for the specific language governing permissions and limitations under
 # the License.
 #
-
-FROM alpine
-
-ENV ELASTICSEARCH_VERSION 6.5.1
-
-RUN apk add --update curl
-
-WORKDIR /elasticsearch
-
-RUN curl -SL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
-    mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
-
-
-FROM gcr.io/distroless/java:11-debug
+FROM openzipkin/jre-full:1.8.0_191
 MAINTAINER OpenZipkin "http://zipkin.io/"
 
-ENV ELASTICSEARCH_VERSION 6.6.0
+ENV ELASTICSEARCH_VERSION 7.0.0-beta1
 # https://github.com/elastic/elasticsearch/pull/31003 was closed won't fix
 ENV ES_TMPDIR /tmp
 
-RUN ["/busybox/sh", "-c", "adduser -g '' -D elasticsearch"]
-
-COPY --from=0 --chown=elasticsearch /elasticsearch /elasticsearch
-
 WORKDIR /elasticsearch
+
+# single layer to install elasticsearch and the user
+RUN curl -SL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION-linux-x86_64.tar.gz| tar xz && \
+    mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/ && \
+    # disable ML as not supported on alpine per https://discuss.elastic.co/t/elasticsearch-failing-to-start-due-to-x-pack/85125/6
+    rm -rf /elasticsearch/modules/x-pack-ml/platform/linux-x86_64 && \
+    adduser -S elasticsearch && \
+    chown -R elasticsearch /elasticsearch
 
 # elasticsearch complains if run as root
 USER elasticsearch
@@ -44,6 +35,5 @@ COPY config ./config
 
 EXPOSE 9200 9300
 
-ENV JAVA_OPTS " "
-
-ENTRYPOINT ["/busybox/sh", "/elasticsearch/bin/elasticsearch"]
+# our image doesn't have bash, so use sh instead, also remove JAVA_OPTS in favor of ES_JAVA_OPTS
+CMD JAVA_OPTS= exec sh /elasticsearch/bin/elasticsearch

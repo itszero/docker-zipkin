@@ -15,7 +15,7 @@
 FROM alpine
 
 ENV ZIPKIN_REPO https://jcenter.bintray.com
-ENV ZIPKIN_VERSION 2.12.1
+ENV ZIPKIN_VERSION 2.12.3
 
 COPY zipkin/ /zipkin/
 WORKDIR /zipkin

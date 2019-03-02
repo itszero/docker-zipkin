@@ -23,7 +23,6 @@ USE mysql ;
 DELETE FROM mysql.user ;
 DROP DATABASE IF EXISTS test ;
 
-SET GLOBAL innodb_file_format=Barracuda ;
 CREATE DATABASE zipkin ;
 
 USE zipkin;
@@ -35,6 +34,14 @@ EOSQL
 
 echo "*** Stopping MySQL"
 pkill -f mysqld
+
+
+echo "*** Enabling Networking"
+cat >> /etc/my.cnf <<-"EOF"
+[mysqld]
+skip-networking=0
+skip-bind-address
+EOF
 
 echo "*** Cleaning Up"
 apk del mysql-client --purge

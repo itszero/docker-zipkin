@@ -14,7 +14,7 @@
 
 FROM alpine
 
-ENV ELASTICSEARCH_VERSION 5.6.13
+ENV ELASTICSEARCH_VERSION 5.6.14
 
 RUN apk add --update curl
 
