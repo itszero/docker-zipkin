@@ -23,7 +23,6 @@ WORKDIR /elasticsearch
 RUN curl -SL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
     mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
 
-
 FROM gcr.io/distroless/java:11-debug
 MAINTAINER OpenZipkin "http://zipkin.io/"
 
