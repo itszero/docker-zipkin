@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -n "$STORAGE_TYPE" ]; then
+if [ -f ".${STORAGE_TYPE}_profile" ]; then
   source .${STORAGE_tYPE}_profile
 fi
 

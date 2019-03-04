@@ -1,3 +1,4 @@
+# We need a JRE to run Cassandra for setting up its schema.
 FROM openjdk:8-jre-alpine
 
 ENV ZIPKIN_VERSION 2.12.3

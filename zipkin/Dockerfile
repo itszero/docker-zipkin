@@ -17,6 +17,7 @@ FROM alpine
 ENV ZIPKIN_REPO https://jcenter.bintray.com
 ENV ZIPKIN_VERSION 2.12.3
 
+# Add environment settings for supported storage types
 COPY zipkin/ /zipkin/
 WORKDIR /zipkin
 
