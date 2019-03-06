@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -f ".${STORAGE_TYPE}_profile" ]; then
-  source .${STORAGE_tYPE}_profile
+  source ${PWD}/.${STORAGE_TYPE}_profile
 fi
 
 if [ -n "$SCRIBE_ENABLED" ]; then
