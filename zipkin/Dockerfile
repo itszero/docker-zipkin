@@ -41,6 +41,8 @@ ENV ZIPKIN_VERSION 2.12.6
 
 # Use to set heap, trust store or other system properties.
 ENV JAVA_OPTS -Djava.security.egd=file:/dev/./urandom
+# 3rd party modules like zipkin-aws will apply profile settings with this
+ENV MODULE_OPTS=
 
 # Add environment settings for supported storage types
 COPY --from=0 /zipkin/ /zipkin/

@@ -12,4 +12,4 @@ if [ -n "$KAFKA_ZOOKEEPER" ]; then
   export JAVA_OPTS="${JAVA_OPTS} -Dloader.path=kafka08 -Dspring.profiles.active=kafka08"
 fi
 
-exec java ${JAVA_OPTS} -cp . org.springframework.boot.loader.PropertiesLauncher
+exec java ${MODULE_OPTS} ${JAVA_OPTS} -cp . org.springframework.boot.loader.PropertiesLauncher
