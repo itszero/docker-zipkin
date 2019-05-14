@@ -46,6 +46,8 @@ ENV MODULE_OPTS=
 COPY --from=0 /zipkin/ /zipkin/
 WORKDIR /zipkin
 
+RUN ["/busybox/sh", "-c", "ln -s /busybox/* /bin"]
+
 EXPOSE 9410 9411
 
 ENTRYPOINT ["/busybox/sh", "run.sh"]
