@@ -16,7 +16,7 @@ while [[ "$timeout" -gt 0 ]] && ! mysql --user=mysql --protocol=socket -uroot -e
 done
 
 echo "*** Importing Schema"
-curl https://raw.githubusercontent.com/apache/incubator-zipkin/v$ZIPKIN_VERSION/zipkin-storage/mysql-v1/src/main/resources/mysql.sql > /mysql/zipkin.sql
+curl -sSL https://raw.githubusercontent.com/openzipkin/zipkin/$ZIPKIN_VERSION/zipkin-storage/mysql-v1/src/main/resources/mysql.sql > /mysql/zipkin.sql
 mysql --verbose --user=mysql --protocol=socket -uroot <<-EOSQL
 USE mysql ;
 

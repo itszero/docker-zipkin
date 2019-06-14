@@ -15,21 +15,21 @@
 FROM alpine
 
 ENV ZIPKIN_REPO https://repo1.maven.org/maven2
-ENV ZIPKIN_VERSION 2.14.0
+ENV ZIPKIN_VERSION 2.14.1
 
 # Add environment settings for supported storage types
 COPY zipkin/ /zipkin/
 WORKDIR /zipkin
 
 RUN apk add unzip curl --no-cache && \
-    curl -SL $ZIPKIN_REPO/org/apache/zipkin/zipkin-server/$ZIPKIN_VERSION/zipkin-server-$ZIPKIN_VERSION-exec.jar > zipkin-server.jar && \
+    curl -SL $ZIPKIN_REPO/io/zipkin/zipkin-server/$ZIPKIN_VERSION/zipkin-server-$ZIPKIN_VERSION-exec.jar > zipkin-server.jar && \
     # don't break when unzip finds an extra header https://github.com/openzipkin/zipkin/issues/1932
     unzip zipkin-server.jar ; \
     rm zipkin-server.jar && \
     apk del unzip
 
 FROM gcr.io/distroless/java:11-debug
-MAINTAINER Zipkin "https://zipkin.apache.org/"
+MAINTAINER Zipkin "https://zipkin.io/"
 
 # Use to set heap, trust store or other system properties.
 ENV JAVA_OPTS -Djava.security.egd=file:/dev/./urandom

@@ -21,7 +21,7 @@ services:
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
-    # Environment settings are defined here https://github.com/apache/incubator-zipkin/blob/master/zipkin-server/README.md#environment-variables
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
     environment:
       - STORAGE_TYPE=mysql
       # Point the zipkin at the storage backend

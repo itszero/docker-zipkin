@@ -19,11 +19,11 @@ RUN apk add --update curl
 
 WORKDIR /elasticsearch
 
-RUN curl -SL https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/$ELASTICSEARCH_VERSION/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
+RUN curl -sSL https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/$ELASTICSEARCH_VERSION/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
     mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
 
 FROM gcr.io/distroless/java:11-debug
-MAINTAINER Zipkin "https://zipkin.apache.org/"
+MAINTAINER Zipkin "https://zipkin.io/"
 
 RUN ["/busybox/sh", "-c", "adduser -g '' -D elasticsearch"]
 

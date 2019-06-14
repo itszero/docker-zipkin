@@ -38,16 +38,16 @@ while [[ "$timeout" -gt 0 ]] && ! /cassandra/bin/cqlsh -e 'SHOW VERSION' localho
 done
 
 echo "*** Importing Scheme"
-curl https://raw.githubusercontent.com/apache/incubator-zipkin/v$ZIPKIN_VERSION/zipkin-storage/cassandra-v1/src/main/resources/cassandra-schema.cql \
+curl -sSL https://raw.githubusercontent.com/openzipkin/zipkin/$ZIPKIN_VERSION/zipkin-storage/cassandra-v1/src/main/resources/cassandra-schema.cql \
      | /cassandra/bin/cqlsh --debug localhost
 
-curl https://raw.githubusercontent.com/apache/incubator-zipkin/v$ZIPKIN_VERSION/zipkin-storage/cassandra/src/main/resources/zipkin2-schema.cql \
+curl -sSL https://raw.githubusercontent.com/openzipkin/zipkin/$ZIPKIN_VERSION/zipkin-storage/cassandra/src/main/resources/zipkin2-schema.cql \
      | /cassandra/bin/cqlsh --debug localhost
 
-curl https://raw.githubusercontent.com/apache/incubator-zipkin/v$ZIPKIN_VERSION/zipkin-storage/cassandra/src/main/resources/zipkin2-schema.cql \
+curl -sSL https://raw.githubusercontent.com/openzipkin/zipkin/$ZIPKIN_VERSION/zipkin-storage/cassandra/src/main/resources/zipkin2-schema.cql \
      | sed 's/ zipkin2/ zipkin2_udts/g' | /cassandra/bin/cqlsh --debug localhost
 
-curl https://raw.githubusercontent.com/apache/incubator-zipkin/v$ZIPKIN_VERSION/zipkin-storage/cassandra/src/main/resources/zipkin2-schema-indexes.cql \
+curl -sSL https://raw.githubusercontent.com/openzipkin/zipkin/$ZIPKIN_VERSION/zipkin-storage/cassandra/src/main/resources/zipkin2-schema-indexes.cql \
      | /cassandra/bin/cqlsh --debug localhost
 
 echo "*** Adding custom UDFs to zipkin2 keyspace"

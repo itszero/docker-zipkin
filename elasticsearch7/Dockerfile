@@ -14,19 +14,19 @@
 
 FROM alpine
 
-ENV ELASTICSEARCH_VERSION 7.0.1
+ENV ELASTICSEARCH_VERSION 7.1.1
 
 RUN apk add --update curl
 
 WORKDIR /elasticsearch
 
-RUN curl -SL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION-linux-x86_64.tar.gz| tar xz && \
+RUN curl -sSL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION-linux-x86_64.tar.gz| tar xz && \
     mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/ && \
     # disable ML as not supported on alpine per https://discuss.elastic.co/t/elasticsearch-failing-to-start-due-to-x-pack/85125/6
     rm -rf /elasticsearch/modules/x-pack-ml/platform/linux-x86_64
 
 FROM gcr.io/distroless/java:11-debug
-MAINTAINER Zipkin "https://zipkin.apache.org/"
+MAINTAINER Zipkin "https://zipkin.io/"
 
 # https://github.com/elastic/elasticsearch/pull/31003 was closed won't fix
 ENV ES_TMPDIR /tmp

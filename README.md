@@ -12,7 +12,7 @@
 
 
 This repository contains the Docker build definition and release process for
-[Apache Incubating Zipkin](https://github.com/apache/incubator-zipkin). It also contains
+[Zipkin Server](https://github.com/openzipkin/zipkin). It also contains
 test images for transport and storage backends such as Kafka or Cassandra.
 
 Automatically built images are available on Quay.io under the [OpenZipkin](https://quay.io/organization/openzipkin) organization,
@@ -48,7 +48,7 @@ See the ui at (docker ip):9411
 In the ui - click zipkin-server, then click "Find Traces".
 
 ## Configuration
-Configuration is via environment variables, defined by [zipkin-server](https://github.com/apache/incubator-zipkin/blob/master/zipkin-server/README.md). Notably, you'll want to look at the `STORAGE_TYPE` environment variables, which
+Configuration is via environment variables, defined by [zipkin-server](https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md). Notably, you'll want to look at the `STORAGE_TYPE` environment variables, which
 include "cassandra", "mysql" and "elasticsearch".
 
 When in docker, the following environment variables also apply
@@ -131,7 +131,7 @@ $ docker-machine ssh default "sudo sysctl -w vm.max_map_count=262144"
 ### Kafka
 
 The docker-compose configuration can be extended to host a test Kafka broker
-and activate the [Kafka collector](https://github.com/apache/incubator-zipkin/tree/master/zipkin-collector/kafka)
+and activate the [Kafka collector](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka)
 using the `docker-compose-kafka.yml` file. That file employs
 [docker-compose overrides](https://docs.docker.com/compose/extends/#multiple-compose-files)
 to add a Kafka+ZooKeeper container and relevant settings.
@@ -140,7 +140,7 @@ To start the MySQL+Kafka configuration, run:
 
     $ docker-compose -f docker-compose.yml -f docker-compose-kafka.yml up
 
-Then configure the [Kafka sender](https://github.com/apache/incubator-zipkin-reporter-java/blob/master/kafka11/src/main/java/zipkin2/reporter/kafka11/KafkaSender.java) using a `bootstrapServers` value of `host.docker.internal:9092` if your application is inside the same docker network or `localhost:19092` if not, but running on the same host.
+Then configure the [Kafka sender](https://github.com/openzipkin/zipkin-reporter-java/blob/master/kafka11/src/main/java/zipkin2/reporter/kafka11/KafkaSender.java) using a `bootstrapServers` value of `host.docker.internal:9092` if your application is inside the same docker network or `localhost:19092` if not, but running on the same host.
 
 In other words, if you are running a sample application on your laptop, you would use `localhost:19092` bootstrap server to send spans to the Kafka broker running in Docker.
 
@@ -192,4 +192,4 @@ and the `bootstrapServers` configuration of the kafka sender to match your Docke
 
 ## Notes
 
-If using a provided MySQL server or image, ensure schema and other parameters match the [docs](https://github.com/apache/incubator-zipkin/tree/master/zipkin-storage/mysql-v1#applying-the-schema).
+If using a provided MySQL server or image, ensure schema and other parameters match the [docs](https://github.com/openzipkin/zipkin/tree/master/zipkin-storage/mysql-v1#applying-the-schema).
