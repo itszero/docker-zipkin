@@ -13,11 +13,15 @@ ADD start.sh /kafka/bin
 
 # Share the same base image to reduce layers used in testing
 FROM gcr.io/distroless/java:11-debug
-MAINTAINER Zipkin "https://zipkin.io/"
+LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 WORKDIR /kafka
 
+RUN ["/busybox/sh", "-c", "adduser -g '' -D kafka"]
+
 COPY --from=0 /kafka /kafka
+
+USER kafka
 
 # Port 19092 is for connections from the Docker host
 EXPOSE 2181 9092 19092

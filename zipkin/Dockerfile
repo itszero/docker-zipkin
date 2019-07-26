@@ -29,18 +29,22 @@ RUN apk add unzip curl --no-cache && \
     apk del unzip
 
 FROM gcr.io/distroless/java:11-debug
-MAINTAINER Zipkin "https://zipkin.io/"
+LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 # Use to set heap, trust store or other system properties.
 ENV JAVA_OPTS -Djava.security.egd=file:/dev/./urandom
 # 3rd party modules like zipkin-aws will apply profile settings with this
 ENV MODULE_OPTS=
 
+RUN ["/busybox/sh", "-c", "adduser -g '' -D zipkin"]
+
 # Add environment settings for supported storage types
 COPY --from=0 /zipkin/ /zipkin/
 WORKDIR /zipkin
 
 RUN ["/busybox/sh", "-c", "ln -s /busybox/* /bin"]
+
+USER zipkin
 
 EXPOSE 9410 9411
 

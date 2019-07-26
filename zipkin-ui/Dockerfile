@@ -1,5 +1,5 @@
 FROM nginx:1.16-alpine
-MAINTAINER Zipkin "https://zipkin.io/"
+LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 # This gets whatever the latest version of zipkin-lens is
 ENV ZIPKIN_REPO https://oss.jfrog.org/artifactory/oss-snapshot-local

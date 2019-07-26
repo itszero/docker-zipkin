@@ -1,5 +1,5 @@
 FROM alpine
-MAINTAINER Zipkin "https://zipkin.io/"
+LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 WORKDIR /mysql
 ADD install.sh /mysql/install

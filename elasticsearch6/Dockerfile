@@ -24,7 +24,7 @@ RUN curl -sSL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch
     mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
 
 FROM gcr.io/distroless/java:11-debug
-MAINTAINER Zipkin "https://zipkin.io/"
+LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 # https://github.com/elastic/elasticsearch/pull/31003 was closed won't fix
 ENV ES_TMPDIR /tmp

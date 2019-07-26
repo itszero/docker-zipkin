@@ -23,7 +23,7 @@ RUN curl -sSL https://download.elasticsearch.org/elasticsearch/release/org/elast
     mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
 
 FROM gcr.io/distroless/java:11-debug
-MAINTAINER Zipkin "https://zipkin.io/"
+LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 RUN ["/busybox/sh", "-c", "adduser -g '' -D elasticsearch"]
 

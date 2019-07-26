@@ -13,7 +13,7 @@ RUN /usr/local/bin/install
 
 # Share the same base image to reduce layers used in testing
 FROM gcr.io/distroless/java:11-debug
-MAINTAINER Zipkin "https://zipkin.io/"
+LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 ENV JVM_OPTS="-Dcassandra -Dcassandra.config.loader=ZipkinConfigurationLoader -Djava.net.preferIPv4Stack=true"
 
