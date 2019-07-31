@@ -23,6 +23,6 @@ RUN apk add --update --no-cache nginx curl && \
 ADD nginx.conf /etc/nginx/conf.d/zipkin.conf.template
 ADD run.sh /usr/local/bin/nginx.sh
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["/usr/local/bin/nginx.sh"]
