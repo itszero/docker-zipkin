@@ -26,6 +26,8 @@ listeners=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:19092
 listener.security.protocol.map=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
 EOF
 
+mkdir /kafka/logs
+
 echo "*** Cleaning Up"
 rm -rf zookeeper-$ZOOKEEPER_VERSION
 
