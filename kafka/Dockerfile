@@ -19,7 +19,7 @@ WORKDIR /kafka
 
 RUN ["/busybox/sh", "-c", "adduser -g '' -D kafka"]
 
-COPY --from=0 /kafka /kafka
+COPY --from=0 --chown=kafka /kafka /kafka
 
 USER kafka
 
