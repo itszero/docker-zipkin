@@ -73,6 +73,17 @@ For example, to add debug logging, set JAVA_OPTS as shown in our [docker-compose
       - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG -Dlogging.level.zipkin2=DEBUG
 ```
 
+## Runtime user
+The openzipkin/zipkin image runs under a nologin user named 'zipkin' with a home
+directory of '/zipkin'. As this is a distroless image, you won't find many
+utilities installed, but you can browse contents with a shell like below:
+
+```bash
+$ docker run -it --rm --entrypoint /busybox/sh openzipkin/zipkin
+/zipkin $ ls
+BOOT-INF  META-INF  org       run.sh
+``
+
 ## docker-compose
 
 This project is configured to run docker containers using
