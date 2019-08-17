@@ -14,7 +14,7 @@
 
 FROM alpine
 
-ENV ELASTICSEARCH_VERSION 7.2.0
+ENV ELASTICSEARCH_VERSION 7.3.0
 
 RUN apk add --update curl
 
@@ -31,7 +31,7 @@ LABEL MAINTAINER Zipkin "https://zipkin.io/"
 # https://github.com/elastic/elasticsearch/pull/31003 was closed won't fix
 ENV ES_TMPDIR /tmp
 
-RUN ["/busybox/sh", "-c", "adduser -g '' -D elasticsearch"]
+RUN ["/busybox/sh", "-c", "adduser -g '' -h /elasticsearch -D elasticsearch"]
 
 COPY --from=0 --chown=elasticsearch /elasticsearch /elasticsearch
 

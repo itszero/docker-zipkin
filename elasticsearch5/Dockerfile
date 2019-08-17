@@ -27,7 +27,7 @@ RUN curl -sSL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch
 FROM gcr.io/distroless/java:11-debug
 LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
-RUN ["/busybox/sh", "-c", "adduser -g '' -D elasticsearch"]
+RUN ["/busybox/sh", "-c", "adduser -g '' -h /elasticsearch -D elasticsearch"]
 
 COPY --from=0 --chown=elasticsearch /elasticsearch /elasticsearch
 

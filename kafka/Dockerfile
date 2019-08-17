@@ -17,7 +17,7 @@ LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 WORKDIR /kafka
 
-RUN ["/busybox/sh", "-c", "adduser -g '' -D kafka"]
+RUN ["/busybox/sh", "-c", "adduser -g '' -h /kafka -D kafka"]
 
 COPY --from=0 --chown=kafka /kafka /kafka
 

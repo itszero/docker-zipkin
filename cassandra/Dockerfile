@@ -17,7 +17,7 @@ LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 ENV JVM_OPTS="-Dcassandra -Dcassandra.config.loader=ZipkinConfigurationLoader -Djava.net.preferIPv4Stack=true"
 
-RUN ["/busybox/sh", "-c", "adduser -g '' -D cassandra"]
+RUN ["/busybox/sh", "-c", "adduser -g '' -h /cassandra -D cassandra"]
 
 COPY --from=0 --chown=cassandra /cassandra /cassandra
 
