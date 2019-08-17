@@ -82,7 +82,7 @@ utilities installed, but you can browse contents with a shell like below:
 $ docker run -it --rm --entrypoint /busybox/sh openzipkin/zipkin
 /zipkin $ ls
 BOOT-INF  META-INF  org       run.sh
-``
+```
 
 ## docker-compose
 
