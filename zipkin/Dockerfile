@@ -14,15 +14,16 @@
 
 FROM alpine
 
-ENV ZIPKIN_REPO https://repo1.maven.org/maven2
-ENV ZIPKIN_VERSION 2.16.1
+ENV USER anuraaga
+ENV BRANCH http-call-request-supplier
+ENV VERSION SNAPSHOT
 
 # Add environment settings for supported storage types
 COPY zipkin/ /zipkin/
 WORKDIR /zipkin
 
 RUN apk add unzip curl --no-cache && \
-    curl -SL $ZIPKIN_REPO/io/zipkin/zipkin-server/$ZIPKIN_VERSION/zipkin-server-$ZIPKIN_VERSION-exec.jar > zipkin-server.jar && \
+    curl -SL https://jitpack.io/com/github/$USER/zipkin/zipkin-server/$BRANCH-$VERSION/zipkin-server-$BRANCH-$VERSION-exec.jar > zipkin-server.jar && \
     # don't break when unzip finds an extra header https://github.com/openzipkin/zipkin/issues/1932
     unzip zipkin-server.jar ; \
     rm zipkin-server.jar && \
