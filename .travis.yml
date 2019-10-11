@@ -1,6 +1,9 @@
 # Trusty Beta requires sudo per https://docs.travis-ci.com/user/ci-environment/
 sudo: required
 dist: trusty
+arch:
+  - arm64
+  - amd64
 
 services:
   - docker
