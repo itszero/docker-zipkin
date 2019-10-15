@@ -24,7 +24,7 @@ WORKDIR /elasticsearch
 RUN curl -sSL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
     mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
 
-FROM gcr.io/distroless/java:11-debug
+FROM openzipkin/jre-full:11.0.4
 LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 RUN ["/busybox/sh", "-c", "adduser -g '' -h /elasticsearch -D elasticsearch"]

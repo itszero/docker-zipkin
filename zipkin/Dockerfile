@@ -28,7 +28,7 @@ RUN apk add unzip curl --no-cache && \
     rm zipkin-server.jar && \
     apk del unzip
 
-FROM gcr.io/distroless/java:11-debug
+FROM openzipkin/jre-full:11.0.4
 LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 # Use to set heap, trust store or other system properties.
