@@ -23,7 +23,7 @@ WORKDIR /elasticsearch
 RUN curl -sSL https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz| tar xz && \
     mv elasticsearch-$ELASTICSEARCH_VERSION/* /elasticsearch/
 
-FROM openzipkin/jre-full:11.0.4
+FROM openzipkin/jre-full:11.0.4-11.33
 LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 # https://github.com/elastic/elasticsearch/pull/31003 was closed won't fix

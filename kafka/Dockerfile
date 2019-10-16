@@ -12,7 +12,7 @@ ADD wait-for-zookeeper.sh /kafka/bin
 ADD start.sh /kafka/bin
 
 # Share the same base image to reduce layers used in testing
-FROM openzipkin/jre-full:11.0.4
+FROM openzipkin/jre-full:11.0.4-11.33
 LABEL MAINTAINER Zipkin "https://zipkin.io/"
 
 WORKDIR /kafka
