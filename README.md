@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/openzipkin/docker-zipkin.svg)](https://travis-ci.org/openzipkin/docker-zipkin)
 [![zipkin](https://quay.io/repository/openzipkin/zipkin/status "zipkin")](https://quay.io/repository/openzipkin/zipkin)
+[![zipkin-slim](https://quay.io/repository/openzipkin/zipkin-slim/status "zipkin-slim")](https://quay.io/repository/openzipkin/zipkin-slim)
 [![zipkin-cassandra](https://quay.io/repository/openzipkin/zipkin-cassandra/status "zipkin-cassandra")](https://quay.io/repository/openzipkin/zipkin-cassandra)
 [![zipkin-mysql](https://quay.io/repository/openzipkin/zipkin-mysql/status "zipkin-mysql")](https://quay.io/repository/openzipkin/zipkin-mysql)
 [![zipkin-elasticsearch](https://quay.io/repository/openzipkin/zipkin-elasticsearch/status "zipkin-elasticsearch")](https://quay.io/repository/openzipkin/zipkin-elasticsearch)
@@ -22,6 +23,7 @@ and are mirrored to [Docker Hub](https://hub.docker.com/u/openzipkin/).
 
 The only images OpenZipkin provides for production use are:
 * [openzipkin/zipkin](./zipkin): The core server image that hosts the Zipkin UI, Api and Collector features.
+* [openzipkin/zipkin-slim](./zipkin-slim): The stripped server image that hosts the Zipkin UI and Api features, but only supports in-memory or Elasticsearch storage with HTTP or gRPC span collectors.
 * [openzipkin/zipkin-dependencies](https://github.com/openzipkin/docker-zipkin-dependencies): pre-aggregates data such that http://your_host:9411/dependency shows links between services.
 
 If you are using these images and run into problems, please raise an issue or
@@ -41,7 +43,7 @@ Kafka, and only those testing or learning zipkin to use the ones we have here.
 ## Running
 
 Zipkin has no dependencies, for example you can run an in-memory zipkin server like so:
-`docker run -d -p 9411:9411 openzipkin/zipkin`
+`docker run -d -p 9411:9411 openzipkin/zipkin-slim`
 
 See the ui at (docker ip):9411
 
@@ -50,6 +52,8 @@ In the ui - click zipkin-server, then click "Find Traces".
 ## Configuration
 Configuration is via environment variables, defined by [zipkin-server](https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md). Notably, you'll want to look at the `STORAGE_TYPE` environment variables, which
 include "cassandra", "mysql" and "elasticsearch".
+
+Note: the `openzipkin/zipkin-slim` image only supports "elasticsearch" storage. To use other storage types, you must use the main image `openzipkin/zipkin`.
 
 When in docker, the following environment variables also apply
 
@@ -74,9 +78,10 @@ For example, to add debug logging, set JAVA_OPTS as shown in our [docker-compose
 ```
 
 ## Runtime user
-The openzipkin/zipkin image runs under a nologin user named 'zipkin' with a home
-directory of '/zipkin'. As this is a distroless image, you won't find many
-utilities installed, but you can browse contents with a shell like below:
+The `openzipkin/zipkin` and `openzipkin/zipkin-slim` images run under a nologin
+user named 'zipkin' with a home directory of '/zipkin'. As this is a distroless
+image, you won't find many utilities installed, but you can browse contents
+with a shell like below:
 
 ```bash
 $ docker run -it --rm --entrypoint /busybox/sh openzipkin/zipkin
@@ -98,6 +103,20 @@ View the web UI at $(docker ip):9411.
 
 To see specific traces in the UI, select "zipkin-server" in the dropdown and
 then click the "Find Traces" button.
+
+### Slim
+To start a smaller and faster distribution of zipkin, run:
+
+```bash
+$ docker-compose -f docker-compose-slim.yml up
+```
+
+This starts in-memory storage. The only other supported option for slim is
+Elasticsearch:
+
+```bash
+$ docker-compose -f docker-compose-slim.yml -f docker-compose-elasticsearch.yml up
+```
 
 ### MySQL
 

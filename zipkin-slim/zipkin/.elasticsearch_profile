@@ -1,0 +1,15 @@
+#!/bin/sh
+if [[ -z "$ES_HOSTS" ]]; then
+  if [[ -z "$STORAGE_PORT_9200_TCP_ADDR" ]]; then
+    echo "** ERROR: You need to link with a Elasticsearch container as 'storage' or specify an"
+    echo "elasticsearch cluster via the ES_HOSTS (hostname:port or http url) env var."
+    echo "STORAGE_PORT_9200_TCP_ADDR (container link) should contain an address or ES_HOSTS should"
+    echo "be set."
+    exit 1
+  fi
+  ES_HOSTS=http://$STORAGE_PORT_9200_TCP_ADDR:9200
+fi
+
+export ES_HOSTS
+
+[[ ! -z $ES_HOSTS ]] && echo "Elasticsearch hosts: $ES_HOSTS"

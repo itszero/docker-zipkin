@@ -71,7 +71,7 @@ Assume we're releasing `1.1.4`.
 
  * The ENV var `ZIPKIN_VERSION` in any `Dockerfile`s that reference it is updated, committed and pushed
  * The tag `1.1.4` is created and pushed. The quay.io repositories for images (`zipkin-cassandra`, `zipkin-collector`,
-   `zipkin-kafka`, and `zipkin`) are configured to trigger a build on tags that look match `\d+\.\d+\.\d+`.
+   `zipkin-kafka`, `zipkin-slim` and `zipkin`) are configured to trigger a build on tags that look match `\d+\.\d+\.\d+`.
  * The script waits for the build of each build to start (timeout 5 minutes) and finish (no timeout) using the quay.io
    API to poll for them. It does this one by one for each build, so usually there's only any waiting for the first image;
    the rest are also about done by the time that's finished.
